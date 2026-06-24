@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+@theme {
+  /* Design system colors */
+  --color-navy: #0F2B47;
+  --color-accent-yellow: #FBBF24;
+  --color-accent-orange: #F97316;
+  --color-accent-blue: #0796B1;
+  --color-text-primary: #E3E3E3;
+  --color-text-secondary: #C2C2C2;
+  --color-border: #1E3A5F;
+  --color-grid-major: rgba(45, 74, 111, 0.5);
+  --color-grid-minor: rgba(30, 58, 95, 0.3);
+  --color-surface: #0d2540;
+  --color-surface-raised: #112d4a;
+
+  /* Fonts */
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Spacing tokens */
+  --spacing-xs: 1rem;
+  --spacing-s: 1.5rem;
+  --spacing-m: 3rem;
+  --spacing-l: 4rem;
+}
+
+body {
+  background-color: #0F2B47;
+  color: #E3E3E3;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Blueprint grid background */
+.blueprint-grid {
+  background-image:
+    repeating-linear-gradient(
+      rgba(45, 74, 111, 0.5) 0px, rgba(45, 74, 111, 0.5) 1px,
+      transparent 1px, transparent 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(45, 74, 111, 0.5) 0px, rgba(45, 74, 111, 0.5) 1px,
+      transparent 1px, transparent 40px
+    ),
+    repeating-linear-gradient(
+      rgba(30, 58, 95, 0.3) 0px, rgba(30, 58, 95, 0.3) 1px,
+      transparent 1px, transparent 8px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(30, 58, 95, 0.3) 0px, rgba(30, 58, 95, 0.3) 1px,
+      transparent 1px, transparent 8px
+    );
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  letter-spacing: -0.03em;
+  color: #E3E3E3;
+}
+
+.body-text {
+  text-align: justify;
+  line-height: 1.7;
+}
+
+/* Prose styles for article body */
+.prose h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #E3E3E3;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #E3E3E3;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.03em;
+}
+
+.prose p {
+  color: #C2C2C2;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  text-align: justify;
+}
+
+.prose ul, .prose ol {
+  color: #C2C2C2;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+
+.prose strong {
+  color: #E3E3E3;
+  font-weight: 600;
+}
+
+.prose hr {
+  border-color: #1E3A5F;
+  margin: 2rem 0;
+}
+
+.prose code {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.875em;
+  color: #FBBF24;
+  background: rgba(251, 191, 36, 0.1);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0F2B47;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E3A5F;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2D4A6F;
+}
+
+/* Navigation links */
+.nav-link {
+  color: #C2C2C2;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.15s ease;
+}
+.nav-link:hover {
+  color: #E3E3E3;
+}
+
+.icon-btn {
+  color: #C2C2C2;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s ease;
+  line-height: 0;
+}
+.icon-btn:hover {
+  color: #E3E3E3;
+}
+
+/* Card hover */
+.card-hover {
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.card-hover:hover {
+  border-color: rgba(7, 150, 177, 0.4);
+  background-color: rgba(13, 37, 64, 0.7);
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid #FBBF24;
+  outline-offset: 2px;
+}
