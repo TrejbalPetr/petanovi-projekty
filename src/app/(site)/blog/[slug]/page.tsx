@@ -84,9 +84,9 @@ export default async function ArticlePage({
                       ? "#0796B1"
                       : "#C2C2C2"
                   }`,
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.12em",
-                  padding: "2px 8px",
+                  fontSize: "0.72rem",
+                  letterSpacing: "0.1em",
+                  padding: "3px 10px",
                   textTransform: "uppercase",
                 }}
               >
@@ -132,7 +132,7 @@ export default async function ArticlePage({
             </div>
 
             {/* Cover image */}
-            <div style={{ position: "relative", height: "360px", border: "1px solid #1E3A5F", overflow: "hidden", marginBottom: "2.5rem" }}>
+            <div style={{ position: "relative", aspectRatio: "3/2", border: "1px solid #1E3A5F", overflow: "hidden", marginBottom: "2.5rem" }}>
               {post.coverImage ? (
                 <Image
                   src={post.coverImage}

@@ -136,6 +136,17 @@ h1, h2, h3, h4 {
   background: #2D4A6F;
 }
 
+/* Global link hover/active */
+a {
+  transition: color 0.15s ease;
+}
+a:hover {
+  color: #FBBF24 !important;
+}
+a:active {
+  color: #0796B1 !important;
+}
+
 /* Navigation links */
 .nav-link {
   color: #C2C2C2;
@@ -144,7 +155,7 @@ h1, h2, h3, h4 {
   transition: color 0.15s ease;
 }
 .nav-link:hover {
-  color: #E3E3E3;
+  color: #FBBF24;
 }
 
 .icon-btn {
@@ -169,8 +180,86 @@ h1, h2, h3, h4 {
   background-color: rgba(13, 37, 64, 0.7);
 }
 
+/* Article card hover */
+.article-card {
+  transition: border-color 0.25s ease, background-color 0.15s ease;
+}
+.article-card:hover {
+  border-color: rgba(251, 191, 36, 0.65) !important;
+  background-color: rgba(13, 37, 64, 0.75);
+}
+.article-card .card-img-wrapper img {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.article-card:hover .card-img-wrapper img {
+  transform: scale(1.07);
+}
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(251, 191, 36, 0.07);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.article-card:hover .card-overlay {
+  opacity: 1;
+}
+.card-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+.article-card:hover .card-crosshair {
+  opacity: 0.6;
+}
+
 /* Focus visible */
 :focus-visible {
   outline: 2px solid #FBBF24;
   outline-offset: 2px;
+}
+
+/* Hero section accent line */
+.hero-section {
+  position: relative;
+}
+
+.hero-line-default,
+.hero-line-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  pointer-events: none;
+  transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  z-index: 10;
+}
+
+.hero-line-default {
+  background: linear-gradient(to right, #F97316, #FBBF24);
+  width: 40%;
+  opacity: 1;
+}
+
+.hero-line-hover {
+  background: linear-gradient(to right, #0796B1, #FBBF24);
+  width: 40%;
+  opacity: 0;
+}
+
+.hero-content:has(.hero-image:hover) .hero-line-default {
+  width: 100%;
+  opacity: 0;
+}
+
+.hero-content:has(.hero-image:hover) .hero-line-hover {
+  width: 100%;
+  opacity: 1;
 }

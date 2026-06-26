@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
   return (
@@ -12,15 +13,15 @@ export default function Header() {
         WebkitBackdropFilter: "blur(8px)",
       }}
     >
-      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 auto" }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 2rem" }}>
       <div
         className="flex items-center justify-between"
         style={{ padding: "1.25rem 0" }}
       >
         {/* Logo */}
-        <Link href="/" className="flex flex-col gap-0.5 no-underline" style={{ textDecoration: "none" }}>
-          <div className="flex items-center gap-3">
-            <span style={{ fontSize: "1.5rem", lineHeight: 1 }}>🐻</span>
+        <Link href="/" className="flex items-center gap-3 no-underline" style={{ textDecoration: "none" }}>
+          <Image src="/icons/Petanovi-projekty-LOGO-Ikona-Handmade-Figma.svg" alt="Logo" width={40} height={40} />
+          <div className="flex flex-col gap-0.5">
             <span
               className="font-bold"
               style={{
@@ -31,18 +32,17 @@ export default function Header() {
             >
               Peťanovi Projekty
             </span>
+            <span
+              className="font-mono"
+              style={{
+                color: "#FBBF24",
+                fontSize: "0.65rem",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Sheet 1 of 1 / REV A.01
+            </span>
           </div>
-          <span
-            className="font-mono"
-            style={{
-              color: "#FBBF24",
-              fontSize: "0.65rem",
-              letterSpacing: "0.05em",
-              paddingLeft: "2.4rem",
-            }}
-          >
-            Sheet 1 of 1 / REV A.01
-          </span>
         </Link>
 
         {/* Navigation */}
@@ -51,7 +51,7 @@ export default function Header() {
             { href: "/", label: "Úvod" },
             { href: "/blog", label: "Blog" },
             { href: "/o-blogu", label: "O" },
-            { href: "/kontakty", label: "Kontakty" },
+            { href: "/#kontakt", label: "Kontakty" },
           ].map(({ href, label }) => (
             <Link key={href} href={href} className="nav-link">
               {label}

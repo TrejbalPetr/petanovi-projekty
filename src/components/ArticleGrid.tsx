@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import type { Post } from "@/lib/types";
-import ArticleRow from "@/components/ArticleRow";
+import ArticleCard from "@/components/ArticleCard";
 
 type Category = "All" | Post["category"];
 
 const CATEGORIES: Category[] = ["All", "DIY", "Expedice", "Documents"];
 
-export default function ArticleFilter({ posts }: { posts: Post[] }) {
+export default function ArticleGrid({ posts }: { posts: Post[] }) {
   const [active, setActive] = useState<Category>("All");
 
   const filtered =
@@ -17,14 +17,14 @@ export default function ArticleFilter({ posts }: { posts: Post[] }) {
   return (
     <div>
       {/* Filter tabs */}
-      <div className="flex items-center gap-1" style={{ marginBottom: "3rem" }}>
+      <div className="flex items-center gap-1" style={{ marginBottom: "2rem" }}>
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
             onClick={() => setActive(cat)}
             className="font-mono"
             style={{
-              fontSize: "0.65rem",
+              fontSize: "0.72rem",
               letterSpacing: "0.1em",
               textTransform: "uppercase",
               padding: "6px 14px",
@@ -39,21 +39,21 @@ export default function ArticleFilter({ posts }: { posts: Post[] }) {
             {cat}
           </button>
         ))}
-        <span className="font-mono" style={{ color: "#2D4A6F", fontSize: "0.6rem", marginLeft: "auto" }}>
+        <span className="font-mono" style={{ color: "#2D4A6F", fontSize: "0.72rem", marginLeft: "auto" }}>
           {filtered.length}{" "}
           {filtered.length === 1 ? "záznam" : filtered.length < 5 ? "záznamy" : "záznamů"}
         </span>
       </div>
 
-      {/* Article list */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-        {filtered.map((post) => (
-          <ArticleRow key={post.slug} post={post} />
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <div className="font-mono" style={{ textAlign: "center", color: "#2D4A6F", fontSize: "0.75rem", padding: "4rem 0" }}>
+      {/* Grid karet */}
+      {filtered.length > 0 ? (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.5rem" }}>
+          {filtered.map((post) => (
+            <ArticleCard key={post.slug} post={post} />
+          ))}
+        </div>
+      ) : (
+        <div className="font-mono" style={{ textAlign: "center", color: "#2D4A6F", fontSize: "0.75rem", padding: "3rem 0" }}>
           // Žádné záznamy v kategorii {active}
         </div>
       )}

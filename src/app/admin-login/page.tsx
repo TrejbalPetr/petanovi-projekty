@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import Image from "next/image";
 
 function LoginForm() {
   const router = useRouter();
@@ -45,7 +46,9 @@ function LoginForm() {
       <div style={{ width: "100%", maxWidth: "360px" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-          <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>🐻</div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <Image src="/icons/Petanovi-projekty-LOGO-Ikona-Handmade-Figma.svg" alt="Logo" width={48} height={48} />
+          </div>
           <h1
             style={{
               color: "#E3E3E3",

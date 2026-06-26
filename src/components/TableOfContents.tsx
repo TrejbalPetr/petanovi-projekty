@@ -74,7 +74,12 @@ export default function TableOfContents({ content }: { content: string }) {
               style={{
                 display: "block",
                 padding: "0.3rem 0",
-                paddingLeft: h.level > 2 ? "1rem" : "0",
+                paddingLeft:
+                  activeId === h.id
+                    ? (h.level > 2 ? "1.5rem" : "0.5rem")
+                    : h.level > 2
+                    ? "1rem"
+                    : "0",
                 color: activeId === h.id ? "#FBBF24" : "#C2C2C2",
                 textDecoration: "none",
                 fontSize: "0.7rem",
@@ -84,12 +89,6 @@ export default function TableOfContents({ content }: { content: string }) {
                   activeId === h.id
                     ? "2px solid #FBBF24"
                     : "2px solid transparent",
-                paddingLeft:
-                  activeId === h.id
-                    ? (h.level > 2 ? "1.5rem" : "0.5rem")
-                    : h.level > 2
-                    ? "1rem"
-                    : "0",
               }}
             >
               {i + 1}. {h.text}
