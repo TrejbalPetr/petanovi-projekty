@@ -3,22 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { colors, mono, sans } from "@/lib/typography";
 import type { Post } from "@/lib/types";
 
 function CategoryTag({ category }: { category: Post["category"] }) {
   return (
-    <span
-      className="font-mono"
-      style={{
-        color: "#FBBF24",
-        backgroundColor: "rgba(13, 37, 64, 0.85)",
-        border: "1px solid rgba(251,191,36,0.5)",
-        fontSize: "0.68rem",
-        letterSpacing: "0.1em",
-        padding: "3px 8px",
-        textTransform: "uppercase",
-      }}
-    >
+    <span className="font-mono" style={{ color: colors.yellow, backgroundColor: colors.surfaceOverlay, border: `1px solid ${colors.yellowBorder}`, fontSize: mono.md, letterSpacing: "0.1em", padding: "3px 8px", textTransform: "uppercase" }}>
       {category}
     </span>
   );
@@ -26,10 +16,7 @@ function CategoryTag({ category }: { category: Post["category"] }) {
 
 function shortDate(dateStr: string) {
   const d = new Date(dateStr);
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const yy = String(d.getFullYear()).slice(2);
-  return `${dd}.${mm}.${yy}`;
+  return `${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getFullYear()).slice(2)}`;
 }
 
 export default function ArticleCard({ post }: { post: Post }) {
@@ -42,8 +29,8 @@ export default function ArticleCard({ post }: { post: Post }) {
       onMouseLeave={() => setHovered(false)}
       onClick={() => router.push(`/blog/${post.slug}`)}
       style={{
-        border: `1px solid ${hovered ? "rgba(251, 191, 36, 0.65)" : "#1E3A5F"}`,
-        backgroundColor: hovered ? "rgba(13, 37, 64, 0.75)" : "rgba(13, 37, 64, 0.5)",
+        border: `1px solid ${hovered ? colors.yellowHover : colors.border}`,
+        backgroundColor: hovered ? colors.surfaceHover : colors.surfaceCard,
         cursor: "pointer",
         height: "100%",
         display: "flex",
@@ -51,18 +38,17 @@ export default function ArticleCard({ post }: { post: Post }) {
         transition: "border-color 0.25s ease, background-color 0.2s ease",
       }}
     >
-      {/* Obrázek */}
-      <div style={{ position: "relative", aspectRatio: "3/2", borderBottom: "1px solid #1E3A5F", overflow: "hidden", flexShrink: 0 }}>
+      <div style={{ position: "relative", aspectRatio: "3/2", borderBottom: `1px solid ${colors.border}`, overflow: "hidden", flexShrink: 0 }}>
         <div style={{ position: "absolute", inset: 0, transform: hovered ? "scale(1.07)" : "scale(1)", transition: "transform 0.5s cubic-bezier(0.4,0,0.2,1)" }}>
           {post.coverImage ? (
             <Image src={post.coverImage} alt={post.title} fill style={{ objectFit: "cover" }} sizes="(max-width: 768px) 100vw, 400px" />
           ) : (
-            <div style={{ width: "100%", height: "100%", backgroundColor: "#0d2540", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span className="font-mono" style={{ color: "#2D4A6F", fontSize: "0.68rem" }}>IMG_PLACEHOLDER</span>
+            <div style={{ width: "100%", height: "100%", backgroundColor: colors.surface, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span className="font-mono" style={{ color: colors.textMuted, fontSize: mono.md }}>IMG_PLACEHOLDER</span>
             </div>
           )}
         </div>
-        <div style={{ position: "absolute", inset: 0, background: "rgba(251, 191, 36, 0.08)", opacity: hovered ? 1 : 0, transition: "opacity 0.3s ease", pointerEvents: "none", zIndex: 2 }} />
+        <div style={{ position: "absolute", inset: 0, background: colors.yellowMuted, opacity: hovered ? 1 : 0, transition: "opacity 0.3s ease", pointerEvents: "none", zIndex: 2 }} />
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: hovered ? 0.6 : 0, transition: "opacity 0.35s ease", pointerEvents: "none", zIndex: 3 }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" fill="none">
           <circle cx="50" cy="50" r="11" stroke="white" strokeWidth="0.25" />
           <circle cx="50" cy="50" r="1" fill="white" />
@@ -74,21 +60,20 @@ export default function ArticleCard({ post }: { post: Post }) {
         </div>
       </div>
 
-      {/* Obsah */}
       <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1 }}>
-        <div className="font-mono flex items-center justify-between" style={{ fontSize: "0.72rem" }}>
-          <span style={{ color: "#FBBF24" }}>DATUM: {shortDate(post.date)}</span>
-          {post.coordinates && <span style={{ color: "#0796B1" }}>{post.coordinates}</span>}
+        <div className="font-mono flex items-center justify-between" style={{ fontSize: mono.base }}>
+          <span style={{ color: colors.yellow }}>DATUM: {shortDate(post.date)}</span>
+          {post.coordinates && <span style={{ color: colors.blue }}>{post.coordinates}</span>}
         </div>
-        <h3 style={{ fontSize: "1.05rem", fontWeight: 600, color: "#E3E3E3", letterSpacing: "-0.02em", lineHeight: 1.3, margin: 0 }}>
+        <h3 style={{ fontSize: sans.h3, fontWeight: 600, color: colors.textPrimary, letterSpacing: "-0.02em", lineHeight: 1.3, margin: 0 }}>
           {post.title}
         </h3>
-        <p style={{ color: "#C2C2C2", fontSize: "0.875rem", lineHeight: 1.6, margin: 0, textAlign: "justify", flex: 1 }}>
+        <p style={{ color: colors.textSecondary, fontSize: sans.sm, lineHeight: 1.6, margin: 0, textAlign: "justify", flex: 1 }}>
           {post.excerpt.slice(0, 140)}…
         </p>
-        <div className="font-mono flex items-center justify-between" style={{ marginTop: "0.4rem", fontSize: "0.72rem" }}>
-          <span style={{ color: "#0796B1" }}>ČAS: {post.readingTime} min</span>
-          <span style={{ color: hovered ? "#FBBF24" : "#C2C2C2", transition: "color 0.2s ease", letterSpacing: "0.06em" }}>
+        <div className="font-mono flex items-center justify-between" style={{ marginTop: "0.4rem", fontSize: mono.base }}>
+          <span style={{ color: colors.blue }}>ČAS: {post.readingTime} min</span>
+          <span style={{ color: hovered ? colors.yellow : colors.textSecondary, transition: "color 0.2s ease", letterSpacing: "0.06em" }}>
             Read_log —&gt;
           </span>
         </div>

@@ -1,24 +1,25 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { colors, mono, sans } from "@/lib/typography";
 
-const inputStyle: React.CSSProperties = {
+const inputStyle = (hasError = false): React.CSSProperties => ({
   width: "100%",
   backgroundColor: "rgba(10, 25, 45, 0.6)",
-  border: "1px solid #1E3A5F",
-  color: "#E3E3E3",
-  fontSize: "0.95rem",
+  border: `1px solid ${hasError ? colors.orange : colors.border}`,
+  color: colors.textPrimary,
+  fontSize: sans.base,
   padding: "0.65rem 0.875rem",
   outline: "none",
   boxSizing: "border-box",
   transition: "border-color 0.15s ease",
   fontFamily: "var(--font-inter), system-ui, sans-serif",
-};
+});
 
 const labelStyle: React.CSSProperties = {
   display: "block",
-  color: "#E3E3E3",
-  fontSize: "0.875rem",
+  color: colors.textPrimary,
+  fontSize: sans.sm,
   marginBottom: "0.4rem",
 };
 
@@ -36,28 +37,22 @@ export default function ContactForm() {
     if (!consent) { setError("Je třeba souhlasit se zpracováním údajů."); return; }
     setLoading(true);
     setError("");
-
     const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, message }),
     });
-
-    if (res.ok) {
-      setSuccess(true);
-    } else {
-      setError("Nepodařilo se odeslat zprávu. Zkus to prosím znovu.");
-    }
+    if (res.ok) { setSuccess(true); } else { setError("Nepodařilo se odeslat zprávu. Zkus to prosím znovu."); }
     setLoading(false);
   }
 
   if (success) {
     return (
-      <div style={{ border: "1px solid rgba(251,191,36,0.4)", backgroundColor: "rgba(251,191,36,0.05)", padding: "2rem" }}>
-        <div className="font-mono" style={{ color: "#FBBF24", fontSize: "0.65rem", letterSpacing: "0.15em", marginBottom: "0.75rem" }}>
+      <div style={{ border: `1px solid rgba(251,191,36,0.4)`, backgroundColor: colors.yellowMuted, padding: "2rem" }}>
+        <div className="font-mono" style={{ color: colors.yellow, fontSize: mono.xs, letterSpacing: "0.15em", marginBottom: "0.75rem" }}>
           STATUS: MESSAGE_SENT ✓
         </div>
-        <p style={{ color: "#E3E3E3", fontSize: "1rem", margin: 0 }}>
+        <p style={{ color: colors.textPrimary, fontSize: sans.base, margin: 0 }}>
           Zpráva dorazila — díky! Ozvu se, jakmile to půjde.
         </p>
       </div>
@@ -66,91 +61,61 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-      {/* Jméno */}
       <div>
         <label style={labelStyle}>Jméno/přezdívka *</label>
-        <input
-          type="text"
-          required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={inputStyle}
-          onFocus={(e) => (e.target.style.borderColor = "#FBBF24")}
-          onBlur={(e) => (e.target.style.borderColor = "#1E3A5F")}
+        <input type="text" required value={name} onChange={(e) => setName(e.target.value)}
+          style={inputStyle()}
+          onFocus={(e) => (e.target.style.borderColor = colors.yellow)}
+          onBlur={(e) => (e.target.style.borderColor = colors.border)}
         />
       </div>
 
-      {/* Email */}
       <div>
         <label style={labelStyle}>Email (pokud chceš kontaktovat zpět ;)</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="nekdo@neco.cz"
-          style={{ ...inputStyle, color: email ? "#E3E3E3" : undefined }}
-          onFocus={(e) => (e.target.style.borderColor = "#FBBF24")}
-          onBlur={(e) => (e.target.style.borderColor = "#1E3A5F")}
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nekdo@neco.cz"
+          style={inputStyle()}
+          onFocus={(e) => (e.target.style.borderColor = colors.yellow)}
+          onBlur={(e) => (e.target.style.borderColor = colors.border)}
         />
       </div>
 
-      {/* Zpráva */}
       <div>
         <label style={labelStyle}>Zpráva *</label>
-        <textarea
-          required
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="..."
-          rows={5}
-          style={{ ...inputStyle, resize: "vertical", minHeight: "120px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}
-          onFocus={(e) => (e.target.style.borderColor = "#FBBF24")}
-          onBlur={(e) => (e.target.style.borderColor = "#1E3A5F")}
+        <textarea required value={message} onChange={(e) => setMessage(e.target.value)} placeholder="..." rows={5}
+          style={{ ...inputStyle(), resize: "vertical", minHeight: "120px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}
+          onFocus={(e) => (e.target.style.borderColor = colors.yellow)}
+          onBlur={(e) => (e.target.style.borderColor = colors.border)}
         />
       </div>
 
-      {/* Souhlas */}
       <div className="flex items-start gap-3">
-        <input
-          type="checkbox"
-          id="consent"
-          checked={consent}
-          onChange={(e) => setConsent(e.target.checked)}
-          style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0, accentColor: "#FBBF24", cursor: "pointer" }}
+        <input type="checkbox" id="consent" checked={consent} onChange={(e) => setConsent(e.target.checked)}
+          style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0, accentColor: colors.yellow, cursor: "pointer" }}
         />
-        <label htmlFor="consent" style={{ ...labelStyle, marginBottom: 0, cursor: "pointer", color: "#C2C2C2", fontSize: "0.875rem" }}>
+        <label htmlFor="consent" style={{ ...labelStyle, marginBottom: 0, cursor: "pointer", color: colors.textSecondary }}>
           Tímto souhlasím se zpracováním poskytnutých údajů *
         </label>
       </div>
 
-      {/* Povinné */}
-      <p style={{ color: "#C2C2C2", fontSize: "0.78rem", margin: 0 }}>
+      <p style={{ color: colors.textSecondary, fontSize: sans.xs, margin: 0 }}>
         * Povinné údaje k vyplnění
       </p>
 
-      {/* Chyba */}
       {error && (
-        <p className="font-mono" style={{ color: "#F97316", fontSize: "0.78rem", margin: 0 }}>{error}</p>
+        <p className="font-mono" style={{ color: colors.orange, fontSize: sans.xs, margin: 0 }}>{error}</p>
       )}
 
-      {/* Submit */}
       <button
         type="submit"
         disabled={loading}
+        className="btn-primary"
         style={{
-          backgroundColor: loading ? "rgba(251,191,36,0.5)" : "#FBBF24",
-          color: "#0F2B47",
-          border: "none",
-          padding: "0.9rem 2rem",
-          fontSize: "1rem",
-          fontWeight: 700,
-          letterSpacing: "0.05em",
+          opacity: loading ? 0.5 : 1,
           cursor: loading ? "not-allowed" : "pointer",
-          transition: "background-color 0.15s ease",
-          fontFamily: "var(--font-inter), system-ui, sans-serif",
+          pointerEvents: loading ? "none" : "auto",
         }}
       >
-        {loading ? "Odesílám..." : "Odeslat -->"}
+        {loading ? "Odesílám..." : "Odeslat →"}
       </button>
     </form>
   );

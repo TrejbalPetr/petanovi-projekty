@@ -1,25 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { slugify } from "@/lib/utils";
+import { colors, mono } from "@/lib/typography";
 
-type Heading = {
-  id: string;
-  text: string;
-  level: number;
-};
+type Heading = { id: string; text: string; level: number };
 
 function extractHeadings(content: string): Heading[] {
-  const lines = content.split("\n");
-  return lines
-    .filter((line) => line.startsWith("##"))
+  return content
+    .split("\n")
+    .filter((line) => /^#{2}\s/.test(line))
     .map((line) => {
       const level = line.match(/^#+/)?.[0].length ?? 2;
       const text = line.replace(/^#+\s*/, "");
-      const id = text
-        .toLowerCase()
-        .replace(/[^a-z0-9À-ɏ\s]/g, "")
-        .replace(/\s+/g, "-");
-      return { id, text, level };
+      return { id: slugify(text), text, level };
     });
 }
 
@@ -29,44 +23,22 @@ export default function TableOfContents({ content }: { content: string }) {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
+      (entries) => { entries.forEach((e) => { if (e.isIntersecting) setActiveId(e.target.id); }); },
       { rootMargin: "0px 0px -70% 0px" }
     );
-
-    headings.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
+    headings.forEach(({ id }) => { const el = document.getElementById(id); if (el) observer.observe(el); });
     return () => observer.disconnect();
   }, [headings]);
 
   if (headings.length === 0) return null;
 
   return (
-    <nav style={{ position: "sticky", top: "6rem" }}>
-      <div
-        className="font-mono"
-        style={{
-          color: "#FBBF24",
-          fontSize: "0.55rem",
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          marginBottom: "1rem",
-          paddingBottom: "0.75rem",
-          borderBottom: "1px solid rgba(30,58,95,0.5)",
-        }}
-      >
+    <nav>
+      <div className="font-mono" style={{ color: colors.yellow, fontSize: mono.xs, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "1rem", paddingBottom: "0.75rem", borderBottom: `1px solid ${colors.borderMedium}` }}>
         LEGENDA — OBSAH
       </div>
-      <ol style={{ listStyle: "none", padding: 0, margin: 0 }}>
-        {headings.map((h, i) => (
+      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {headings.map((h) => (
           <li key={h.id}>
             <a
               href={`#${h.id}`}
@@ -74,28 +46,20 @@ export default function TableOfContents({ content }: { content: string }) {
               style={{
                 display: "block",
                 padding: "0.3rem 0",
-                paddingLeft:
-                  activeId === h.id
-                    ? (h.level > 2 ? "1.5rem" : "0.5rem")
-                    : h.level > 2
-                    ? "1rem"
-                    : "0",
-                color: activeId === h.id ? "#FBBF24" : "#C2C2C2",
+                paddingLeft: "0.875rem",
+                color: activeId === h.id ? colors.yellow : colors.textSecondary,
                 textDecoration: "none",
-                fontSize: "0.7rem",
+                fontSize: mono.md,
                 lineHeight: 1.5,
-                transition: "color 0.15s ease",
-                borderLeft:
-                  activeId === h.id
-                    ? "2px solid #FBBF24"
-                    : "2px solid transparent",
+                transition: "color 0.2s ease",
+                borderLeft: activeId === h.id ? `2px solid ${colors.yellow}` : "2px solid transparent",
               }}
             >
-              {i + 1}. {h.text}
+              {h.text}
             </a>
           </li>
         ))}
-      </ol>
+      </ul>
     </nav>
   );
 }

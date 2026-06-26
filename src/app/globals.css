@@ -14,6 +14,9 @@
   --color-surface: #0d2540;
   --color-surface-raised: #112d4a;
 
+  /* Breakpoints */
+  --breakpoint-md: 800px;
+
   /* Fonts */
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
@@ -23,6 +26,10 @@
   --spacing-s: 1.5rem;
   --spacing-m: 3rem;
   --spacing-l: 4rem;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -73,6 +80,7 @@ h1, h2, h3, h4 {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   letter-spacing: -0.03em;
+  scroll-margin-top: 6rem;
 }
 
 .prose h3 {
@@ -82,6 +90,7 @@ h1, h2, h3, h4 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   letter-spacing: -0.03em;
+  scroll-margin-top: 9rem;
 }
 
 .prose p {
@@ -262,4 +271,61 @@ a:active {
 .hero-content:has(.hero-image:hover) .hero-line-hover {
   width: 100%;
   opacity: 1;
+}
+
+/* ─── Button system ──────────────────────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background-color: #FBBF24;
+  color: #0F2B47;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: 2px solid #FBBF24;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.btn-primary:hover {
+  background-color: #F97316 !important;
+  border-color: #F97316 !important;
+  color: #0F2B47 !important;
+}
+.btn-primary:active {
+  background-color: #e06510 !important;
+  border-color: #e06510 !important;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background-color: transparent;
+  color: #C2C2C2;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: 1px solid rgba(194, 194, 194, 0.3);
+  cursor: pointer;
+  border-radius: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.btn-secondary:hover {
+  background-color: rgba(251, 191, 36, 0.06) !important;
+  border-color: #FBBF24 !important;
+  color: #FBBF24 !important;
+}
+.btn-secondary:active {
+  background-color: rgba(251, 191, 36, 0.12) !important;
 }

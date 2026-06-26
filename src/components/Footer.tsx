@@ -1,102 +1,75 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-
-const LINKS = [
-  { href: "/blog", label: "Blog archiv" },
-  { href: "/o-blogu", label: "O mně" },
-  { href: "/#kontakt", label: "Kontakty" },
-  { href: "/zasady", label: "Zásady a pravidla" },
-];
+import { usePathname } from "next/navigation";
+import { colors, mono, sans } from "@/lib/typography";
 
 const SOCIALS = [
-  { name: "Instagram", icon: "/icons/Instagram_logo_2022.svg", href: "#" },
-  { name: "Strava", icon: "/icons/strava-svgrepo-com.svg", href: "#" },
-  { name: "Printables", icon: "/icons/printables-logo.svg", href: "#" },
-  { name: "Makerworld", icon: "/icons/maker-world-dark.svg", href: "#" },
+  { name: "Instagram", icon: "/icons/Instagram_logo_2022.svg", href: "https://www.instagram.com/trejbal_petr/" },
+  { name: "Strava", icon: "/icons/strava-svgrepo-com.svg", href: "https://www.strava.com/athletes/112294070" },
+  { name: "Printables", icon: "/icons/printables-logo.svg", href: "https://www.printables.com/@Trejby_81_191561" },
+  { name: "Makerworld", icon: "/icons/maker-world-dark.svg", href: "https://makerworld.com/cs/@trejby_81" },
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  function scrollToTopIfHome(e: React.MouseEvent) {
+    if (pathname === "/") {
+      e.preventDefault();
+      document.documentElement.style.scrollBehavior = "auto";
+      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
+        document.documentElement.style.scrollBehavior = "";
+      });
+    }
+  }
+
+  const linkStyle = { color: colors.textSecondary, fontSize: sans.sm, textDecoration: "none", transition: "color 0.15s ease" };
+
   return (
-    <footer
-      style={{
-        borderTop: "1px solid rgba(30, 58, 95, 0.6)",
-        backgroundColor: "rgba(17, 17, 17, 0.5)",
-        marginTop: "6rem",
-      }}
-    >
+    <footer style={{ borderTop: `1px solid ${colors.borderStrong}`, backgroundColor: "rgba(17, 17, 17, 0.5)", marginTop: "6rem" }}>
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "3rem 2rem" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.5fr 1fr 1fr",
-            gap: "3rem",
-          }}
-        >
-          {/* Left — logo + popis */}
+        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: "3rem" }}>
+
+          {/* Left */}
           <div>
-            <div className="flex items-center gap-2" style={{ marginBottom: "0.75rem" }}>
+            <Link href="/" onClick={scrollToTopIfHome} className="flex items-center gap-2" style={{ textDecoration: "none", marginBottom: "0.75rem", display: "inline-flex" }}>
               <Image src="/icons/Petanovi-projekty-LOGO-Ikona-Handmade-Figma.svg" alt="Logo" width={30} height={30} />
-              <span className="font-bold" style={{ color: "#E3E3E3", fontSize: "0.95rem", letterSpacing: "-0.01em" }}>
+              <span className="font-bold" style={{ color: colors.textPrimary, fontSize: sans.base, letterSpacing: "-0.01em" }}>
                 Peťanovi Projekty
               </span>
-            </div>
-            <p style={{ color: "#C2C2C2", fontSize: "0.8rem", lineHeight: 1.7, margin: 0 }}>
+            </Link>
+            <p style={{ color: colors.textSecondary, fontSize: sans.sm, lineHeight: 1.7, margin: 0 }}>
               Projekty zdokumentované, otestované a připravené k replikaci. DIY, 3D tisk a outdoorové výpravy.
             </p>
           </div>
 
-          {/* Middle — LINKS */}
+          {/* Middle — Links */}
           <div>
-            <h3
-              className="font-mono"
-              style={{
-                color: "#FBBF24",
-                fontSize: "0.65rem",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                marginBottom: "1.25rem",
-              }}
-            >
+            <h3 className="font-mono" style={{ color: colors.yellow, fontSize: mono.xs, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "1.25rem" }}>
               LINKS
             </h3>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              {LINKS.map(({ href, label }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    style={{ color: "#C2C2C2", fontSize: "0.875rem", textDecoration: "none", transition: "color 0.15s ease" }}
-                    className="nav-link"
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
+              <li><Link href="/" onClick={scrollToTopIfHome} className="nav-link" style={linkStyle}>Úvod</Link></li>
+              <li><Link href="/blog" className="nav-link" style={linkStyle}>Blog</Link></li>
+              <li><Link href="/o-blogu" className="nav-link" style={linkStyle}>O mně</Link></li>
+              <li><Link href="/#kontakt" className="nav-link" style={linkStyle}>Kontakty</Link></li>
+              <li><Link href="/zasady" className="nav-link" style={linkStyle}>Zásady ochrany osobních údajů</Link></li>
             </ul>
           </div>
 
-          {/* Right — CONNECT */}
+          {/* Right — Connect */}
           <div>
-            <h3
-              className="font-mono"
-              style={{
-                color: "#FBBF24",
-                fontSize: "0.65rem",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                marginBottom: "1.25rem",
-              }}
-            >
+            <h3 className="font-mono" style={{ color: colors.yellow, fontSize: mono.xs, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "1.25rem" }}>
               CONNECT
             </h3>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {SOCIALS.map(({ name, icon, href }) => (
                 <li key={name}>
-                  <a
-                    href={href}
-                    className="flex items-center gap-3"
-                    style={{ textDecoration: "none", color: "#C2C2C2", fontSize: "0.85rem", transition: "color 0.15s ease" }}
-                  >
-                    <span style={{ width: "28px", height: "28px", flexShrink: 0, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3" style={{ ...linkStyle, display: "flex" }}>
+                    <span style={{ width: "28px", height: "28px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <Image src={icon} alt={name} width={28} height={28} style={{ objectFit: "contain" }} />
                     </span>
                     {name}
@@ -108,18 +81,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div
-          className="flex justify-between items-center font-mono"
-          style={{
-            borderTop: "1px solid rgba(30, 58, 95, 0.4)",
-            marginTop: "2.5rem",
-            paddingTop: "1.5rem",
-          }}
-        >
-          <span style={{ color: "#C2C2C2", fontSize: "0.72rem", letterSpacing: "0.05em" }}>
+        <div className="flex justify-between items-center font-mono" style={{ borderTop: `1px solid ${colors.borderSubtle}`, marginTop: "2.5rem", paddingTop: "1.5rem" }}>
+          <span style={{ color: colors.textSecondary, fontSize: mono.base, letterSpacing: "0.05em" }}>
             @2026 Made by Me 😁 | ALL RIGHTS RESERVED
           </span>
-          <span style={{ color: "#C2C2C2", fontSize: "0.6rem", letterSpacing: "0.08em" }}>
+          <span style={{ color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.08em" }}>
             SYSTEM STATUS: OPERATIONAL
           </span>
         </div>
