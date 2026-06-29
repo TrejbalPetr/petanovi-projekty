@@ -1,5 +1,5 @@
 import { getAllPosts } from "@/lib/posts";
-import { colors, mono, sans } from "@/lib/typography";
+import { colors, mono } from "@/lib/typography";
 import ArticleFilter from "@/components/ArticleFilter";
 
 export const metadata = { title: "Blog — Peťanovi Projekty" };
@@ -8,7 +8,7 @@ export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <div style={{ padding: "5rem 2rem" }}>
+    <div className="px-5 py-12 sm:px-8 sm:py-20">
       <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
         <div style={{ marginBottom: "4rem" }}>
           <div className="font-mono" style={{ color: colors.yellow, fontSize: mono.xs, letterSpacing: "0.15em", marginBottom: "1rem", textTransform: "uppercase" }}>

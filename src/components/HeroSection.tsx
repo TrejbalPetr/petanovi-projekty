@@ -29,7 +29,8 @@ export default function HeroSection({ post, stats }: { post: Post; stats: BlogSt
 
           {/* ── LATEST POST ── */}
           <div
-            style={{ position: "relative", display: "flex", flexDirection: "column", gap: "1.25rem", paddingTop: "1.5rem", cursor: "pointer" }}
+            className="article-card"
+            style={{ position: "relative", display: "flex", flexDirection: "column", gap: "1.25rem", padding: "1.5rem", paddingTop: "1.5rem", cursor: "pointer", border: `1px solid ${colors.border}`, backgroundColor: colors.surfaceCard }}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             onClick={() => router.push(`/blog/${post.slug}`)}

@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/utils";
 import { colors, mono, sans } from "@/lib/typography";
 import TableOfContents from "@/components/TableOfContents";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import DownloadsSection from "@/components/DownloadsSection";
 
 export async function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -37,42 +38,46 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           <span>{post.slug}</span>
         </nav>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 260px", gap: "5rem", alignItems: "start" }}>
+        <div style={{ marginBottom: "1.25rem" }}>
+          <span className="font-mono" style={{ color: categoryColor, border: `1px solid ${categoryColor}`, fontSize: mono.lg, letterSpacing: "0.1em", padding: "3px 10px", textTransform: "uppercase" }}>
+            {post.category}
+          </span>
+        </div>
 
-          <article>
-            <div style={{ marginBottom: "1.25rem" }}>
-              <span className="font-mono" style={{ color: categoryColor, border: `1px solid ${categoryColor}`, fontSize: mono.lg, letterSpacing: "0.1em", padding: "3px 10px", textTransform: "uppercase" }}>
-                {post.category}
-              </span>
+        <h1 style={{ fontSize: sans.h1, fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1.25rem" }}>
+          {post.title}
+        </h1>
+
+        <div className="font-mono flex flex-wrap items-center gap-4" style={{ color: colors.blue, fontSize: mono.md, letterSpacing: "0.05em", marginBottom: "2.5rem", paddingBottom: "2rem", borderBottom: `1px solid ${colors.borderMedium}` }}>
+          <span>{formatDate(post.date)}</span>
+          <span style={{ color: colors.border }}>—</span>
+          <span>{post.readingTime} min čtení</span>
+          {post.coordinates && (<><span style={{ color: colors.border }}>—</span><span>{post.coordinates}</span></>)}
+        </div>
+
+        <div className="article-layout">
+          <div className="article-cover" style={{ position: "relative", aspectRatio: "3/2", border: `1px solid ${colors.border}`, overflow: "hidden" }}>
+            {post.coverImage ? (
+              <Image src={post.coverImage} alt={post.title} fill style={{ objectFit: "cover" }} sizes="(max-width: 900px) 100vw, 740px" priority />
+            ) : (
+              <div style={{ width: "100%", height: "100%", backgroundColor: colors.surface, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span className="font-mono" style={{ color: colors.textMuted, fontSize: mono.base, letterSpacing: "0.1em" }}>COVER_IMAGE // {post.slug.toUpperCase()}</span>
+              </div>
+            )}
+          </div>
+
+          <aside>
+            <div className="toc-sticky">
+              <TableOfContents content={post.content} />
             </div>
-
-            <h1 style={{ fontSize: sans.h1, fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1.25rem" }}>
-              {post.title}
-            </h1>
-
-            <div className="font-mono flex flex-wrap items-center gap-4" style={{ color: colors.blue, fontSize: mono.md, letterSpacing: "0.05em", marginBottom: "2.5rem", paddingBottom: "2rem", borderBottom: `1px solid ${colors.borderMedium}` }}>
-              <span>{formatDate(post.date)}</span>
-              <span style={{ color: colors.border }}>—</span>
-              <span>{post.readingTime} min čtení</span>
-              {post.coordinates && (<><span style={{ color: colors.border }}>—</span><span>{post.coordinates}</span></>)}
-            </div>
-
-            <div style={{ position: "relative", aspectRatio: "3/2", border: `1px solid ${colors.border}`, overflow: "hidden", marginBottom: "2.5rem" }}>
-              {post.coverImage ? (
-                <Image src={post.coverImage} alt={post.title} fill style={{ objectFit: "cover" }} sizes="(max-width: 1200px) 100vw, 800px" priority />
-              ) : (
-                <div style={{ width: "100%", height: "100%", backgroundColor: colors.surface, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span className="font-mono" style={{ color: colors.textMuted, fontSize: mono.base, letterSpacing: "0.1em" }}>COVER_IMAGE // {post.slug.toUpperCase()}</span>
-                </div>
-              )}
-            </div>
-
-            <MarkdownRenderer content={post.content} />
-          </article>
-
-          <aside style={{ position: "sticky", top: "7rem", alignSelf: "start" }}>
-            <TableOfContents content={post.content} />
           </aside>
+
+          <article style={{ alignSelf: "start" }}>
+            <MarkdownRenderer content={post.content} />
+            {post.downloads && post.downloads.length > 0 && (
+              <DownloadsSection downloads={post.downloads} />
+            )}
+          </article>
         </div>
 
         <div style={{ marginTop: "4rem", paddingTop: "2rem", borderTop: `1px solid rgba(30,58,95,0.4)` }}>

@@ -1,3 +1,9 @@
+export type DownloadFile = {
+  label?: string;
+  filename?: string;
+  file: string;
+};
+
 export type Post = {
   slug: string;
   title: string;
@@ -8,4 +14,5 @@ export type Post = {
   coverImage?: string;
   coordinates?: string;
   content: string;
+  downloads?: DownloadFile[];
 };

@@ -16,9 +16,8 @@ export default function ArticleRow({ post }: { post: Post }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => router.push(`/blog/${post.slug}`)}
+      className="flex flex-col sm:flex-row"
       style={{
-        display: "flex",
-        height: "200px",
         border: `1px solid ${hovered ? colors.yellowHover : colors.border}`,
         backgroundColor: hovered ? colors.surfaceHover : "rgba(13,37,64,0.4)",
         cursor: "pointer",
@@ -26,7 +25,10 @@ export default function ArticleRow({ post }: { post: Post }) {
         transition: "border-color 0.25s ease, background-color 0.2s ease",
       }}
     >
-      <div style={{ position: "relative", width: "300px", flexShrink: 0, borderRight: `1px solid ${hovered ? "rgba(251,191,36,0.3)" : colors.border}`, overflow: "hidden", backgroundColor: colors.surface, transition: "border-color 0.25s ease" }}>
+      <div
+        className="relative w-full aspect-[3/2] shrink-0 sm:w-[300px] sm:aspect-[3/2]"
+        style={{ borderRight: `1px solid ${hovered ? "rgba(251,191,36,0.3)" : colors.border}`, overflow: "hidden", backgroundColor: colors.surface, transition: "border-color 0.25s ease" }}
+      >
         <div style={{ position: "absolute", inset: 0, transform: hovered ? "scale(1.07)" : "scale(1)", transition: "transform 0.5s cubic-bezier(0.4,0,0.2,1)" }}>
           {post.coverImage ? (
             <Image src={post.coverImage} alt={post.title} fill style={{ objectFit: "cover" }} sizes="300px" />
@@ -50,7 +52,7 @@ export default function ArticleRow({ post }: { post: Post }) {
         </div>
       </div>
 
-      <div style={{ padding: "1.25rem 1.5rem", display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1, overflow: "hidden" }}>
+      <div className="flex flex-1 flex-col justify-between overflow-hidden p-5 sm:px-6">
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           {post.coordinates && (
             <div className="font-mono" style={{ fontSize: mono.base, color: colors.blue }}>

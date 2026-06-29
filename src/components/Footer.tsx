@@ -31,7 +31,7 @@ export default function Footer() {
   return (
     <footer style={{ borderTop: `1px solid ${colors.borderStrong}`, backgroundColor: "rgba(17, 17, 17, 0.5)", marginTop: "6rem" }}>
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "3rem 2rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: "3rem" }}>
+        <div className="grid md:grid-cols-[1.5fr_1fr_1fr]" style={{ gap: "2rem" }}>
 
           {/* Left */}
           <div>
@@ -81,7 +81,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex justify-between items-center font-mono" style={{ borderTop: `1px solid ${colors.borderSubtle}`, marginTop: "2.5rem", paddingTop: "1.5rem" }}>
+        <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center font-mono" style={{ borderTop: `1px solid ${colors.borderSubtle}`, marginTop: "2.5rem", paddingTop: "1.5rem", gap: "0.5rem" }}>
           <span style={{ color: colors.textSecondary, fontSize: mono.base, letterSpacing: "0.05em" }}>
             @2026 Made by Me 😁 | ALL RIGHTS RESERVED
           </span>

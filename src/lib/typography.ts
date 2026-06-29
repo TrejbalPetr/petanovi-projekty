@@ -9,9 +9,9 @@ export const colors = {
   // Pozadí
   bg:             "#0F2B47",
   surface:        "#0d2540",
-  surfaceCard:    "rgba(13, 37, 64, 0.5)",
-  surfaceHover:   "rgba(13, 37, 64, 0.75)",
-  surfaceOverlay: "rgba(13, 37, 64, 0.85)",
+  surfaceCard:    "rgba(13, 37, 64, 0.60)",  //rgba(13, 37, 64, 0.5)
+  surfaceHover:   "rgba(13, 37, 64, 0.75)", //rgba(13, 37, 64, 0.75)
+  surfaceOverlay: "rgba(13, 37, 64, 0.85)", //rgba(13, 37, 64, 0.85)
 
   // Akcenty
   yellow:        "#FBBF24",

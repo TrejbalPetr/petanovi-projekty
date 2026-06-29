@@ -40,6 +40,28 @@ export default config({
           publicPath: "/images/posts/",
         }),
         body: fields.mdx({ label: "Obsah" }),
+        downloads: fields.array(
+          fields.object({
+            label: fields.text({
+              label: "Popisek",
+              description: "Zobrazovaný název (např. 'Výkres rámu'). Nechte prázdné pro použití názvu souboru.",
+            }),
+            filename: fields.text({
+              label: "Název souboru ke stažení",
+              description: "Přesný název včetně přípony (např. ram-v2.stl). Prohlížeč soubor stáhne pod tímto jménem.",
+            }),
+            file: fields.file({
+              label: "Soubor",
+              directory: "public/downloads",
+              publicPath: "/downloads/",
+              description: "PDF, PNG, SVG, STL, OBJ, ZIP...",
+            }),
+          }),
+          {
+            label: "Soubory ke stažení",
+            itemLabel: (props) => props.fields.label.value || "Soubor",
+          }
+        ),
       },
     }),
   },

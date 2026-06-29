@@ -48,7 +48,7 @@ export default async function HomePage() {
 
       <section id="kontakt" style={{ padding: "5rem 2rem 6rem", borderTop: `1px solid ${colors.borderMedium}`, marginTop: "2rem", scrollMarginTop: "6rem" }}>
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", alignItems: "start" }}>
+          <div className="grid md:grid-cols-2" style={{ gap: "3rem", alignItems: "start" }}>
             <div>
               <h2 style={{ fontSize: sans.h1, fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "2rem" }}>
                 Chceš se o něco podělit?

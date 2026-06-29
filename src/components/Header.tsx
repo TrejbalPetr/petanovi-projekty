@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { colors, mono, sans } from "@/lib/typography";
+import SearchBox from "@/components/SearchBox";
 
 const NAV_LINKS = [
   { href: "/", label: "Úvod", home: true },
@@ -16,6 +17,7 @@ const NAV_LINKS = [
 export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   // Zavři menu při změně stránky
   useEffect(() => { setMenuOpen(false); }, [pathname]);
@@ -72,7 +74,7 @@ export default function Header() {
                   <Link key={href} href={href} className="nav-link">{label}</Link>
                 )
               )}
-              <button className="icon-btn" aria-label="Hledat">
+              <button className="icon-btn" aria-label="Hledat" onClick={() => setSearchOpen(true)}>
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -171,6 +173,8 @@ export default function Header() {
           </div>
         </div>
       )}
+
+      <SearchBox open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }

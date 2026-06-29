@@ -52,6 +52,7 @@ export function getPostBySlug(slug: string): Post | null {
       coverImage: data.coverImage,
       coordinates: data.coordinates,
       content,
+      downloads: Array.isArray(data.downloads) ? data.downloads : undefined,
     };
   } catch {
     return null;
