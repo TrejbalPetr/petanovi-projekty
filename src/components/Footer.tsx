@@ -30,7 +30,8 @@ export default function Footer() {
 
   return (
     <footer style={{ borderTop: `1px solid ${colors.borderStrong}`, backgroundColor: "rgba(17, 17, 17, 0.5)", marginTop: "6rem" }}>
-      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "3rem 2rem" }}>
+      <div style={{ padding: "0 2rem" }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "3rem 0" }}>
         <div className="grid md:grid-cols-[1.5fr_1fr_1fr]" style={{ gap: "2rem" }}>
 
           {/* Left */}
@@ -54,7 +55,7 @@ export default function Footer() {
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.6rem" }}>
               <li><Link href="/" onClick={scrollToTopIfHome} className="nav-link" style={linkStyle}>Úvod</Link></li>
               <li><Link href="/blog" className="nav-link" style={linkStyle}>Blog</Link></li>
-              <li><Link href="/blog/0-manual-takovy-ty-uvodni-pindy" className="nav-link" style={linkStyle}>O bloku</Link></li>
+              <li><Link href="/o-projektu" className="nav-link" style={linkStyle}>O projektu</Link></li>
               <li><Link href="/#kontakt" className="nav-link" style={linkStyle}>Kontakty</Link></li>
               <li><Link href="/zasady" className="nav-link" style={linkStyle}>Zásady ochrany osobních údajů</Link></li>
             </ul>
@@ -89,6 +90,7 @@ export default function Footer() {
             SYSTEM STATUS: OPERATIONAL
           </span>
         </div>
+      </div>
       </div>
     </footer>
   );

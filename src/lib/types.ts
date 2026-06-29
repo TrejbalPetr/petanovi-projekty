@@ -15,4 +15,6 @@ export type Post = {
   coordinates?: string;
   content: string;
   downloads?: DownloadFile[];
+  metaDescription?: string;
+  ogImage?: string;
 };

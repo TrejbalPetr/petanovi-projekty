@@ -53,7 +53,21 @@ export function getPostBySlug(slug: string): Post | null {
       coordinates: data.coordinates,
       content,
       downloads: Array.isArray(data.downloads) ? data.downloads : undefined,
+      metaDescription: data.metaDescription || undefined,
+      ogImage: data.ogImage || undefined,
     };
+  } catch {
+    return null;
+  }
+}
+
+export function getPageContent(pageName: string): { data: Record<string, string>; content: string } | null {
+  try {
+    const fullPath = path.join(process.cwd(), `content/pages/${pageName}.mdx`);
+    if (!fs.existsSync(fullPath)) return null;
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+    const { data, content } = matter(fileContents);
+    return { data: data as Record<string, string>, content };
   } catch {
     return null;
   }

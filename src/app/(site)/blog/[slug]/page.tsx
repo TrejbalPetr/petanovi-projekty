@@ -16,7 +16,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
-  return { title: `${post.title} — Peťanovi Projekty`, description: post.excerpt };
+  const description = post.metaDescription || post.excerpt;
+  const ogImg = post.ogImage || post.coverImage;
+  return {
+    title: `${post.title} — Peťanovi Projekty`,
+    description,
+    openGraph: {
+      title: post.title,
+      description,
+      ...(ogImg ? { images: [{ url: ogImg }] } : {}),
+    },
+  };
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {

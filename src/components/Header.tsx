@@ -10,7 +10,7 @@ import SearchBox from "@/components/SearchBox";
 const NAV_LINKS = [
   { href: "/", label: "Úvod", home: true },
   { href: "/blog", label: "Blog" },
-  { href: "/blog/0-manual-takovy-ty-uvodni-pindy", label: "O bloku" },
+  { href: "/o-projektu", label: "O projektu" },
   { href: "/#kontakt", label: "Kontakty" },
 ];
 
@@ -58,7 +58,8 @@ export default function Header() {
           WebkitBackdropFilter: "blur(8px)",
         }}
       >
-        <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 1.5rem" }}>
+        <div style={{ padding: "0 2rem" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <div className="flex items-center justify-between" style={{ padding: "1rem 0" }}>
 
             {/* Logo */}
@@ -111,6 +112,7 @@ export default function Header() {
             </button>
 
           </div>
+        </div>
         </div>
       </header>
 

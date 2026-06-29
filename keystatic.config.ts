@@ -1,4 +1,4 @@
-import { config, collection, fields } from "@keystatic/core";
+import { config, collection, singleton, fields } from "@keystatic/core";
 
 export default config({
   storage: {
@@ -26,6 +26,11 @@ export default config({
           label: "Perex",
           multiline: true,
         }),
+        metaDescription: fields.text({
+          label: "Meta description (SEO)",
+          description: "Popis článku pro vyhledávače a sdílení (doporučeno 120–160 znaků). Pokud nevyplníš, použije se perex.",
+          multiline: true,
+        }),
         readingTime: fields.number({
           label: "Čas čtení (minuty)",
           defaultValue: 5,
@@ -38,6 +43,12 @@ export default config({
           label: "Náhledový obrázek",
           directory: "public/images/posts",
           publicPath: "/images/posts/",
+        }),
+        ogImage: fields.image({
+          label: "OG Image (pro sdílení na sociálních sítích)",
+          description: "Obrázek zobrazovaný při sdílení na Facebooku, Twitteru, LinkedIn apod. (doporučeno 1200×630 px). Pokud nevyplníš, použije se náhledový obrázek.",
+          directory: "public/images/og",
+          publicPath: "/images/og/",
         }),
         body: fields.mdx({ label: "Obsah" }),
         downloads: fields.array(
@@ -62,6 +73,54 @@ export default config({
             itemLabel: (props) => props.fields.label.value || "Soubor",
           }
         ),
+      },
+    }),
+  },
+  singletons: {
+    oProjektu: singleton({
+      label: "Stránka: O projektu",
+      path: "content/pages/o-projektu",
+      format: { contentField: "body" },
+      schema: {
+        metaTitle: fields.text({
+          label: "Meta Title",
+          description: "Titulek stránky pro vyhledávače (doporučeno do 60 znaků).",
+        }),
+        metaDescription: fields.text({
+          label: "Meta Description (SEO)",
+          description: "Popis stránky pro vyhledávače a sdílení (doporučeno 120–160 znaků).",
+          multiline: true,
+        }),
+        ogImage: fields.image({
+          label: "OG Image (pro sdílení na sociálních sítích)",
+          description: "Obrázek zobrazovaný při sdílení na Facebooku, Twitteru, LinkedIn apod. (doporučeno 1200×630 px).",
+          directory: "public/images/og",
+          publicPath: "/images/og/",
+        }),
+        body: fields.mdx({ label: "Obsah stránky" }),
+      },
+    }),
+    zasady: singleton({
+      label: "Stránka: Zásady ochrany osobních údajů",
+      path: "content/pages/zasady",
+      format: { contentField: "body" },
+      schema: {
+        metaTitle: fields.text({
+          label: "Meta Title",
+          description: "Titulek stránky pro vyhledávače (doporučeno do 60 znaků).",
+        }),
+        metaDescription: fields.text({
+          label: "Meta Description (SEO)",
+          description: "Popis stránky pro vyhledávače a sdílení (doporučeno 120–160 znaků).",
+          multiline: true,
+        }),
+        ogImage: fields.image({
+          label: "OG Image (pro sdílení na sociálních sítích)",
+          description: "Obrázek zobrazovaný při sdílení na Facebooku, Twitteru, LinkedIn apod. (doporučeno 1200×630 px).",
+          directory: "public/images/og",
+          publicPath: "/images/og/",
+        }),
+        body: fields.mdx({ label: "Obsah stránky" }),
       },
     }),
   },

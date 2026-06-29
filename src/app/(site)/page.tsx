@@ -4,6 +4,8 @@ import { colors, mono, sans } from "@/lib/typography";
 import HeroSection from "@/components/HeroSection";
 import ArticleGrid from "@/components/ArticleGrid";
 import ContactForm from "@/components/ContactForm";
+import StatsCounter from "@/components/StatsCounter";
+import { formatDate } from "@/lib/utils";
 
 export default async function HomePage() {
   const posts = getAllPosts();
@@ -27,6 +29,16 @@ export default async function HomePage() {
           Žádné články k zobrazení.
         </div>
       )}
+
+      <div style={{ borderTop: `1px solid ${colors.borderMedium}`, margin: "0 4rem" }} />
+
+      <StatsCounter
+        total={stats.total}
+        diy={stats.diy}
+        expedice={stats.expedice}
+        documents={stats.documents}
+        lastUpdate={stats.lastUpdate ? formatDate(stats.lastUpdate) : ""}
+      />
 
       <div style={{ borderTop: `1px solid ${colors.borderMedium}`, margin: "0 4rem" }} />
 

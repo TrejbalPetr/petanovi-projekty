@@ -15,6 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Peťanovi Projekty",
   description: "Technický blog o DIY projektech, expedících a dokumentech.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://petanovi-projekty.vercel.app"),
 };
 
 export default function RootLayout({
