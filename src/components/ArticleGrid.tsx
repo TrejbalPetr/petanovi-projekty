@@ -15,7 +15,7 @@ export default function ArticleGrid({ posts }: { posts: Post[] }) {
   return (
     <div>
       <div style={{ marginBottom: "2rem" }}>
-        <div className="flex items-center gap-1">
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.35rem" }}>
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -23,9 +23,9 @@ export default function ArticleGrid({ posts }: { posts: Post[] }) {
               className="font-mono"
               style={{
                 fontSize: mono.lg,
-                letterSpacing: "0.1em",
+                letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                padding: "6px 14px",
+                padding: "5px 10px",
                 border: "1px solid",
                 borderColor: active === cat ? colors.yellow : "rgba(30,58,95,0.7)",
                 backgroundColor: active === cat ? colors.yellowMuted : "transparent",

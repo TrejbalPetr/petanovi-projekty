@@ -10,7 +10,7 @@ import SearchBox from "@/components/SearchBox";
 const NAV_LINKS = [
   { href: "/", label: "Úvod", home: true },
   { href: "/blog", label: "Blog" },
-  { href: "/o-blogu", label: "O" },
+  { href: "/blog/0-manual-takovy-ty-uvodni-pindy", label: "O bloku" },
   { href: "/#kontakt", label: "Kontakty" },
 ];
 
@@ -22,10 +22,19 @@ export default function Header() {
   // Zavři menu při změně stránky
   useEffect(() => { setMenuOpen(false); }, [pathname]);
 
-  // Zamkni scroll při otevřeném menu
+  // Zamkni scroll při otevřeném menu (i html element kvůli iOS Safari)
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
   }, [menuOpen]);
 
   function scrollToTopIfHome(e: React.MouseEvent) {
@@ -111,18 +120,51 @@ export default function Header() {
           className="flex md:hidden flex-col"
           style={{
             position: "fixed",
-            top: "61px",
+            top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            zIndex: 49,
+            zIndex: 60,
             backgroundColor: "rgba(12, 28, 52, 0.98)",
             backdropFilter: "blur(12px)",
-            borderTop: `1px solid ${colors.borderStrong}`,
-            padding: "2rem 1.5rem",
             overflowY: "auto",
           }}
         >
+          {/* Hlavička overlaye — logo + zavírací tlačítko */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "1rem 1.5rem",
+              borderBottom: `1px solid ${colors.borderStrong}`,
+              flexShrink: 0,
+            }}
+          >
+            <Link href="/" onClick={(e) => { setMenuOpen(false); scrollToTopIfHome(e); }} className="flex items-center gap-3" style={{ textDecoration: "none" }}>
+              <Image src="/icons/Petanovi-projekty-LOGO-Ikona-Handmade-Figma.svg" alt="Logo" width={36} height={36} />
+              <div className="flex flex-col gap-0.5">
+                <span className="font-bold" style={{ color: colors.textPrimary, fontSize: sans.lg, letterSpacing: "-0.02em", lineHeight: 1 }}>
+                  Peťanovi Projekty
+                </span>
+                <span className="font-mono" style={{ color: colors.yellow, fontSize: mono.xs, letterSpacing: "0.05em" }}>
+                  Sheet 1 of 1 / REV A.01
+                </span>
+              </div>
+            </Link>
+            <button
+              onClick={() => setMenuOpen(false)}
+              aria-label="Zavřít menu"
+              style={{ padding: "6px", color: colors.textPrimary, background: "none", border: "none", cursor: "pointer" }}
+            >
+              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Obsah menu */}
+          <div style={{ padding: "2rem 1.5rem", display: "flex", flexDirection: "column", flex: 1 }}>
           {/* Nav links */}
           <nav style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             {NAV_LINKS.map(({ href, label, home }) => (
@@ -144,6 +186,31 @@ export default function Header() {
                 {label}
               </Link>
             ))}
+            <button
+              onClick={() => { setMenuOpen(false); setSearchOpen(true); }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.75rem",
+                color: colors.textPrimary,
+                background: "none",
+                border: "none",
+                borderBottom: `1px solid ${colors.borderSubtle}`,
+                fontSize: sans.xl,
+                fontWeight: 600,
+                padding: "1rem 0",
+                cursor: "pointer",
+                letterSpacing: "-0.01em",
+                width: "100%",
+                textAlign: "left",
+                transition: "color 0.15s ease",
+              }}
+            >
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              Hledat
+            </button>
           </nav>
 
           {/* Sociální sítě v menu */}
@@ -171,6 +238,7 @@ export default function Header() {
               Sheet 1 of 1 / REV A.01
             </span>
           </div>
+          </div>{/* /Obsah menu */}
         </div>
       )}
 

@@ -54,7 +54,7 @@ export default function Footer() {
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.6rem" }}>
               <li><Link href="/" onClick={scrollToTopIfHome} className="nav-link" style={linkStyle}>Úvod</Link></li>
               <li><Link href="/blog" className="nav-link" style={linkStyle}>Blog</Link></li>
-              <li><Link href="/o-blogu" className="nav-link" style={linkStyle}>O mně</Link></li>
+              <li><Link href="/blog/0-manual-takovy-ty-uvodni-pindy" className="nav-link" style={linkStyle}>O bloku</Link></li>
               <li><Link href="/#kontakt" className="nav-link" style={linkStyle}>Kontakty</Link></li>
               <li><Link href="/zasady" className="nav-link" style={linkStyle}>Zásady ochrany osobních údajů</Link></li>
             </ul>

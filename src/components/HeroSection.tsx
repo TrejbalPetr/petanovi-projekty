@@ -55,9 +55,10 @@ export default function HeroSection({ post, stats }: { post: Post; stats: BlogSt
               {post.excerpt}
             </p>
 
-            <div className="font-mono" style={{ position: "relative", color: colors.blue, fontSize: mono.md, letterSpacing: "0.08em" }}>
-              DATUM: {formatDate(post.date)}, ODHAD. ČAS: {post.readingTime} min
-              {post.coordinates && <span style={{ marginLeft: "1rem", color: colors.textSecondary }}>{post.coordinates}</span>}
+            <div className="font-mono" style={{ position: "relative", color: colors.blue, fontSize: mono.md, letterSpacing: "0.08em", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
+              <span>DATUM: {formatDate(post.date)}</span>
+              <span>ODHAD. ČAS: {post.readingTime} min</span>
+              {post.coordinates && <span style={{ color: colors.textSecondary }}>{post.coordinates}</span>}
             </div>
 
             <div style={{ position: "relative", aspectRatio: "3/2", border: `1px solid ${colors.border}`, overflow: "hidden" }}>

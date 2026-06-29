@@ -312,15 +312,19 @@ a:active {
 
 .article-cover {
   grid-area: cover;
+  min-width: 0;
 }
 
 .article-layout article {
   grid-area: content;
   align-self: start;
+  min-width: 0;
+  overflow-x: clip;
 }
 
 .article-layout aside {
   grid-area: toc;
+  min-width: 0;
 }
 
 .toc-sticky {
