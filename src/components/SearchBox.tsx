@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
+import { formatDate } from "@/lib/utils";
 import { colors, mono, sans } from "@/lib/typography";
 
 type SearchPost = {
@@ -290,7 +291,7 @@ export default function SearchBox({ open, onClose }: Props) {
                       className="font-mono"
                       style={{ fontSize: mono.xs, color: colors.textMuted, letterSpacing: "0.05em" }}
                     >
-                      {post.date}
+                      {formatDate(post.date)}
                     </span>
                     <span
                       className="font-mono"

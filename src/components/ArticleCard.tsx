@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { formatDate } from "@/lib/utils";
 import { colors, mono, sans } from "@/lib/typography";
 import type { Post } from "@/lib/types";
 
@@ -12,11 +13,6 @@ function CategoryTag({ category }: { category: Post["category"] }) {
       {category}
     </span>
   );
-}
-
-function shortDate(dateStr: string) {
-  const d = new Date(dateStr);
-  return `${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getFullYear()).slice(2)}`;
 }
 
 export default function ArticleCard({ post }: { post: Post }) {
@@ -62,7 +58,7 @@ export default function ArticleCard({ post }: { post: Post }) {
 
       <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1 }}>
         <div className="font-mono flex items-center justify-between" style={{ fontSize: mono.base }}>
-          <span style={{ color: colors.yellow }}>DATUM: {shortDate(post.date)}</span>
+          <span style={{ color: colors.yellow }}>DATUM: {formatDate(post.date)}</span>
           {post.coordinates && <span style={{ color: colors.blue }}>{post.coordinates}</span>}
         </div>
         <h3 style={{ fontSize: sans.h3, fontWeight: 600, color: colors.textPrimary, letterSpacing: "-0.02em", lineHeight: 1.3, margin: 0 }}>

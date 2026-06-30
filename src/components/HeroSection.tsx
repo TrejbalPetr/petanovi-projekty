@@ -1,36 +1,161 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
 import { colors, mono, sans } from "@/lib/typography";
 import type { Post } from "@/lib/types";
+import type { HomepageSettings } from "@/lib/posts";
 
 interface BlogStats { total: number; diy: number; expedice: number; documents: number; lastUpdate: string; }
 
-export default function HeroSection({ post, stats }: { post: Post; stats: BlogStats }) {
+function useLiveClock() {
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    setNow(new Date());
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return now;
+}
+
+export default function HeroSection({ post, stats, settings }: { post: Post; stats: BlogStats; settings: HomepageSettings }) {
   const [hovered, setHovered] = useState(false);
+  const [focusIndex, setFocusIndex] = useState(0);
+  const [focusVisible, setFocusVisible] = useState(true);
   const router = useRouter();
+  const now = useLiveClock();
+
+  useEffect(() => {
+    const words = settings.heroBodyFocusWords;
+    if (words.length <= 1) return;
+    const id = setInterval(() => {
+      setFocusVisible(false);
+      setTimeout(() => {
+        setFocusIndex((i) => (i + 1) % words.length);
+        setFocusVisible(true);
+      }, 300);
+    }, 2000);
+    return () => clearInterval(id);
+  }, [settings.heroBodyFocusWords.length]);
+
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const timeStr = now
+    ? `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`
+    : "00:00:00";
+  const dateStr = now
+    ? `${pad(now.getDate())}.${pad(now.getMonth() + 1)}.${now.getFullYear()}`
+    : "";
 
   const lineBase: React.CSSProperties = {
     position: "absolute", top: 0, left: 0, height: "5px", pointerEvents: "none",
     transition: "width 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease", zIndex: 10,
   };
 
-  const panelHeader = { color: colors.yellow, fontSize: mono.xs, letterSpacing: "0.15em", padding: "0.4rem 0.75rem", borderBottom: `1px solid ${colors.borderMedium}`, textTransform: "uppercase" as const };
+  const counters = [
+    { value: pad(stats.diy), label: "DIY BUILD" },
+    { value: pad(stats.expedice), label: "EXPEDICE" },
+    { value: pad(stats.documents), label: "DOCS" },
+  ];
 
   return (
-    <section className="hero-section" style={{ padding: "clamp(3rem, 6vw, 5rem) 1.5rem 4rem" }}>
+    <section className="hero-section" style={{ paddingBottom: "2rem" }}>
+
+      {/* ── Status bar — full width, header-style ── */}
+      <div
+        style={{
+          padding: "0 2rem",
+          marginBottom: "clamp(2rem, 4vw, 3.5rem)",
+          borderBottom: `1px solid ${colors.borderSubtle}`,
+          backgroundColor: "rgba(12, 28, 52, 0.55)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+        }}
+      >
+        <div className="font-mono" style={{ maxWidth: "1000px", margin: "0 auto", padding: "0.25rem 0", display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: mono.xs, letterSpacing: "0.12em", color: colors.textSecondary }}>
+          <span>FIELD_STATION // HOME</span>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+              {/* inline style ensures yellow regardless of CSS cache */}
+              <span style={{ display: "inline-block", width: "6px", height: "6px", borderRadius: "50%", backgroundColor: colors.yellow, flexShrink: 0, animation: "live-blink 1.5s ease-in-out infinite" }} />
+              <span style={{ color: colors.blue }}>LIVE</span>
+            </span>
+            <span style={{ color: colors.borderStrong }}>|</span>
+            <span style={{ color: colors.textPrimary }}>{timeStr}</span>
+            <span style={{ color: colors.borderStrong }}>|</span>
+            <span style={{ color: colors.textPrimary }}>{dateStr}</span>
+            <span className="hidden md:inline" style={{ color: colors.borderStrong }}>|</span>
+            <span className="hidden md:inline" style={{ color: colors.blue }}>{settings.gpsCoordinates}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding: "0 2rem" }}>
       <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
 
-        {/* Grid: 1 col mobile → 2fr 1fr desktop */}
-        <div className="grid md:grid-cols-[2fr_1fr]" style={{ gap: "3rem", alignItems: "start" }}>
+        {/* ── Grid: editorial left | LATEST POST right (50/50) ── */}
+        <div className="grid md:grid-cols-2" style={{ gap: "3rem", alignItems: "start" }}>
 
-          {/* ── LATEST POST ── */}
+          {/* ── LEFT: Editorial ── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+
+            <span className="font-mono" style={{ color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.15em" }}>
+              // {settings.heroLabel}
+            </span>
+
+            <h1 style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>
+              {settings.heroHeadline}{" "}
+              <span style={{ color: colors.yellow }}>{settings.heroHeadlineAccent}</span>
+            </h1>
+
+            <div className="font-mono" style={{ fontSize: mono.xs, letterSpacing: "0.15em", color: colors.textSecondary }}>
+              BODY ZÁJMU:{" "}
+              <span style={{ color: colors.yellow, opacity: focusVisible ? 1 : 0, transition: "opacity 0.25s ease", display: "inline-block" }}>
+                {settings.heroBodyFocusWords[focusIndex]}_
+              </span>
+            </div>
+
+            <p style={{ color: colors.textSecondary, fontSize: sans.base, lineHeight: 1.7, margin: 0, whiteSpace: "pre-line" }}>
+              {settings.heroDescription}
+            </p>
+
+            {/* Counters */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", border: `1px solid ${colors.border}` }}>
+              {counters.map(({ value, label }, i) => (
+                <div
+                  key={label}
+                  style={{
+                    padding: "0.75rem 1rem",
+                    borderRight: i < counters.length - 1 ? `1px solid ${colors.border}` : "none",
+                  }}
+                >
+                  <div className="font-mono" style={{ color: colors.yellow, fontSize: "1.5rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1 }}>
+                    {value}
+                  </div>
+                  <div className="font-mono" style={{ color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.1em", marginTop: "0.3rem", textTransform: "uppercase" }}>
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+              <Link href={`/blog/${post.slug}`} className="btn-primary">
+                › NEJNOVĚJŠÍ LOG
+              </Link>
+              <Link href="/blog" className="btn-secondary">
+                ARCHIV →
+              </Link>
+            </div>
+
+          </div>
+
+          {/* ── RIGHT: LATEST POST ── */}
           <div
             className="article-card"
-            style={{ position: "relative", display: "flex", flexDirection: "column", gap: "1.25rem", padding: "1.5rem", paddingTop: "1.5rem", cursor: "pointer", border: `1px solid ${colors.border}`, backgroundColor: colors.surfaceCard }}
+            style={{ position: "relative", display: "flex", flexDirection: "column", gap: "0.85rem", padding: "1.25rem", cursor: "pointer", border: `1px solid ${colors.border}`, backgroundColor: colors.surfaceCard }}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             onClick={() => router.push(`/blog/${post.slug}`)}
@@ -38,141 +163,67 @@ export default function HeroSection({ post, stats }: { post: Post; stats: BlogSt
             <div style={{ ...lineBase, width: hovered ? "100%" : "40%", opacity: hovered ? 0 : 1, background: `linear-gradient(to right, ${colors.orange}, ${colors.yellow})` }} />
             <div style={{ ...lineBase, width: hovered ? "100%" : "40%", opacity: hovered ? 1 : 0, background: `linear-gradient(to right, ${colors.blue}, ${colors.yellow})` }} />
 
-            <div className="flex items-center gap-3" style={{ position: "relative", zIndex: 2 }}>
-              <span className="font-mono" style={{ backgroundColor: colors.yellow, color: colors.bg, fontSize: mono.base, fontWeight: 700, letterSpacing: "0.12em", padding: "3px 8px", textTransform: "uppercase" }}>
-                LATEST POST
-              </span>
-              <span className="font-mono" style={{ color: colors.yellow, fontSize: mono.base, letterSpacing: "0.1em" }}>
-                // {post.category}
+            {/* Header row: badge + category + img label */}
+            <div className="flex items-center justify-between" style={{ position: "relative", zIndex: 2 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <span className="font-mono" style={{ backgroundColor: colors.yellow, color: colors.bg, fontSize: mono.sm, fontWeight: 700, letterSpacing: "0.12em", padding: "3px 8px", textTransform: "uppercase" }}>
+                  LATEST POST
+                </span>
+                <span className="font-mono" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.1em" }}>
+                  // {post.category.toUpperCase()}
+                </span>
+              </div>
+              <span className="font-mono" style={{ color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.1em" }}>
+                IMG_01
               </span>
             </div>
 
-            <h1 style={{ position: "relative", fontSize: sans.hero, fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.03em", lineHeight: 1.15, margin: 0 }}>
-              {post.title}
-            </h1>
-
-            <p style={{ position: "relative", color: colors.textSecondary, fontSize: sans.sm, lineHeight: 1.7, margin: 0 }}>
-              {post.excerpt}
-            </p>
-
-            <div className="font-mono" style={{ position: "relative", color: colors.blue, fontSize: mono.md, letterSpacing: "0.08em", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
-              <span>DATUM: {formatDate(post.date)}</span>
-              <span>ODHAD. ČAS: {post.readingTime} min</span>
-              {post.coordinates && <span style={{ color: colors.textSecondary }}>{post.coordinates}</span>}
-            </div>
-
+            {/* Cover image */}
             <div style={{ position: "relative", aspectRatio: "3/2", border: `1px solid ${colors.border}`, overflow: "hidden" }}>
               <div style={{ position: "absolute", inset: 0, transform: hovered ? "scale(1.07)" : "scale(1)", transition: "transform 0.5s cubic-bezier(0.4,0,0.2,1)" }}>
                 {post.coverImage ? (
-                  <Image src={post.coverImage} alt={post.title} fill style={{ objectFit: "cover" }} sizes="(max-width: 800px) 100vw, 66vw" priority />
+                  <Image src={post.coverImage} alt={post.title} fill style={{ objectFit: "cover" }} sizes="500px" priority />
                 ) : (
                   <div style={{ width: "100%", height: "100%", backgroundColor: colors.surface, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span className="font-mono" style={{ color: colors.textMuted, fontSize: mono.base }}>COVER_IMAGE_01</span>
+                    <span className="font-mono" style={{ color: colors.textMuted, fontSize: mono.xs }}>COVER_IMAGE_01</span>
                   </div>
                 )}
               </div>
-              <div className="font-mono" style={{ position: "absolute", bottom: "0.75rem", left: "0.75rem", zIndex: 2, backgroundColor: "rgba(15,43,71,0.85)", border: `1px solid ${colors.border}`, color: colors.textSecondary, fontSize: mono.sm, letterSpacing: "0.1em", padding: "2px 8px", textTransform: "uppercase" }}>
-                Img. 01: View_A
+              <div className="font-mono" style={{ position: "absolute", bottom: "0.5rem", left: "0.5rem", zIndex: 2, backgroundColor: colors.surfaceOverlay, border: `1px solid ${colors.border}`, color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.1em", padding: "2px 6px", textTransform: "uppercase" }}>
+                Img. 01
               </div>
             </div>
 
-            <div style={{ position: "relative", zIndex: 2 }}>
-              <span className="font-mono" style={{ color: colors.yellow, fontSize: mono.lg, letterSpacing: "0.1em" }}>
-                FULL_ARTICLE —&gt;
+            {/* Date + reading time under image */}
+            <div className="font-mono flex items-center gap-3" style={{ position: "relative", zIndex: 2, color: colors.blue, fontSize: mono.xs, letterSpacing: "0.1em" }}>
+              <span>{formatDate(post.date)}</span>
+              <span style={{ color: colors.borderStrong }}>·</span>
+              <span>{post.readingTime} min čtení</span>
+            </div>
+
+            {/* Title */}
+            <h2 style={{ position: "relative", zIndex: 2, fontSize: sans.lg, fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.02em", lineHeight: 1.2, margin: 0 }}>
+              {post.title}
+            </h2>
+
+            {/* Excerpt */}
+            <p style={{ position: "relative", zIndex: 2, color: colors.textSecondary, fontSize: sans.sm, lineHeight: 1.6, margin: 0 }}>
+              {post.excerpt}
+            </p>
+
+            {/* Footer: coordinates left | FULL_ARTICLE right */}
+            <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.75rem", borderTop: `1px solid ${colors.borderSubtle}`, marginTop: "auto" }}>
+              <div className="font-mono" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.08em" }}>
+                {post.coordinates ?? "N 50°05′ E 14°28′"}
+              </div>
+              <span className="font-mono" style={{ color: colors.yellow, fontSize: mono.sm, letterSpacing: "0.1em" }}>
+                FULL_ARTICLE →
               </span>
             </div>
           </div>
 
-          {/* ── RIGHT SIDEBAR ── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-
-            {/* TECH_DATA — pouze desktop */}
-            <div className="hidden md:block" style={{ border: `1px solid ${colors.border}` }}>
-              <div className="font-mono" style={panelHeader}>TECH_DATA // REV 1.0</div>
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <tbody>
-                  {[["Date", formatDate(post.date)], ["Scale", "1:1"], ["Status", "PUBLISHED"], ["REF", post.slug.toUpperCase().slice(0, 12)]].map(([label, value]) => (
-                    <tr key={label} style={{ borderBottom: `1px solid ${colors.borderSubtle}` }}>
-                      <td className="font-mono" style={{ color: colors.textSecondary, fontSize: mono.sm, letterSpacing: "0.08em", padding: "0.4rem 0.75rem", borderRight: `1px solid ${colors.borderMedium}`, width: "40%", textTransform: "uppercase" }}>{label}</td>
-                      <td className="font-mono" style={{ color: colors.textPrimary, fontSize: mono.base, padding: "0.4rem 0.75rem" }}>{value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* BLOG_STATS — vždy viditelné, na mobilu kompaktní */}
-            <div style={{ border: `1px solid ${colors.border}` }}>
-              <div className="font-mono" style={panelHeader}>BLOG_STATS // LIVE</div>
-              <div style={{ padding: "0.6rem 0.75rem" }}>
-
-                {/* Mobile: vodorovný layout */}
-                <div className="flex md:hidden justify-between" style={{ gap: "1rem" }}>
-                  <div className="font-mono" style={{ fontSize: mono.sm }}>
-                    <span style={{ color: colors.textSecondary, textTransform: "uppercase", letterSpacing: "0.06em" }}>Celkem </span>
-                    <span style={{ color: colors.textPrimary, fontWeight: 600 }}>{stats.total}</span>
-                  </div>
-                  {[["DIY", stats.diy], ["Expedice", stats.expedice], ["Docs", stats.documents]].map(([cat, count]) => (
-                    <div key={String(cat)} className="font-mono" style={{ fontSize: mono.sm }}>
-                      <span style={{ color: colors.textSecondary, textTransform: "uppercase", letterSpacing: "0.06em" }}>{cat} </span>
-                      <span style={{ color: colors.blue }}>{count}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Desktop: původní svislý layout */}
-                <div className="hidden md:flex flex-col" style={{ gap: "0.35rem" }}>
-                  <div className="font-mono flex justify-between" style={{ fontSize: mono.base }}>
-                    <span style={{ color: colors.textSecondary, textTransform: "uppercase", letterSpacing: "0.08em" }}>Total</span>
-                    <span style={{ color: colors.textPrimary }}>{stats.total} articles</span>
-                  </div>
-                  <div style={{ borderTop: `1px solid ${colors.borderSubtle}`, paddingTop: "0.35rem", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
-                    {[["DIY", stats.diy], ["Expedice", stats.expedice], ["Documents", stats.documents]].map(([cat, count]) => (
-                      <div key={String(cat)} className="font-mono flex justify-between" style={{ fontSize: mono.sm }}>
-                        <span style={{ color: colors.textSecondary, textTransform: "uppercase", letterSpacing: "0.06em" }}>{cat}</span>
-                        <span style={{ color: colors.blue }}>{count}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ borderTop: `1px solid ${colors.borderSubtle}`, paddingTop: "0.35rem" }}>
-                    <div className="font-mono" style={{ fontSize: mono.xs, color: colors.textSecondary, letterSpacing: "0.06em" }}>
-                      LAST UPDATE: <span style={{ color: colors.yellow }}>{formatDate(stats.lastUpdate)}</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            {/* AUTHOR_CARD — pouze desktop */}
-            <div className="hidden md:block" style={{ border: `1px solid ${colors.border}` }}>
-              <div className="font-mono" style={panelHeader}>AUTHOR_CARD // REV 2.0</div>
-              <div style={{ padding: "0.75rem" }}>
-                <div className="flex gap-3" style={{ alignItems: "center", marginBottom: "0.75rem" }}>
-                  <div style={{ width: "56px", height: "56px", flexShrink: 0, border: `1px solid ${colors.border}`, overflow: "hidden", backgroundColor: colors.surface, position: "relative" }}>
-                    <Image src="/images/author.jpg" alt="Petr N." fill style={{ objectFit: "cover" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <Image src="/icons/Petanovi-projekty-LOGO-Ikona-Handmade-Figma.svg" alt="avatar" width={32} height={32} />
-                    </div>
-                  </div>
-                  <div>
-                    <div style={{ color: colors.textPrimary, fontSize: sans.sm, fontWeight: 600, letterSpacing: "-0.01em" }}>Petr N.</div>
-                    <div className="font-mono" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.08em" }}>REF: CZ-2026-001</div>
-                  </div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
-                  {[["Výška / Váha", "182 cm / 78 kg"], ["Věk", "26 let"], ["Lokace", "50°05′N 14°28′E"], ["Spec.", "DIY · Outdoors · 3D Tisk"], ["Kafe / den", "≥ 3 ☕"], ["Výška terénu", "2 000 m+"]].map(([label, value]) => (
-                    <div key={String(label)} className="font-mono flex justify-between gap-2" style={{ fontSize: mono.sm }}>
-                      <span style={{ color: colors.textSecondary, textTransform: "uppercase", letterSpacing: "0.06em", flexShrink: 0 }}>{label}</span>
-                      <span style={{ color: colors.textPrimary, textAlign: "right" }}>{value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-          </div>
         </div>
+      </div>
       </div>
     </section>
   );

@@ -1,16 +1,15 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts, getHomepageSettings } from "@/lib/posts";
 import { colors, mono, sans } from "@/lib/typography";
 import HeroSection from "@/components/HeroSection";
 import ArticleGrid from "@/components/ArticleGrid";
 import ContactForm from "@/components/ContactForm";
-import StatsCounter from "@/components/StatsCounter";
-import { formatDate } from "@/lib/utils";
 
 export default async function HomePage() {
   const posts = getAllPosts();
   const latestPost = posts[0];
   const otherPosts = posts.slice(1);
+  const homepageSettings = getHomepageSettings();
 
   const stats = {
     total: posts.length,
@@ -23,7 +22,7 @@ export default async function HomePage() {
   return (
     <>
       {latestPost ? (
-        <HeroSection post={latestPost} stats={stats} />
+        <HeroSection post={latestPost} stats={stats} settings={homepageSettings} />
       ) : (
         <div style={{ padding: "5rem 4rem", textAlign: "center", color: colors.textSecondary }}>
           Žádné články k zobrazení.
@@ -32,18 +31,8 @@ export default async function HomePage() {
 
       <div style={{ borderTop: `1px solid ${colors.borderMedium}`, margin: "0 4rem" }} />
 
-      <StatsCounter
-        total={stats.total}
-        diy={stats.diy}
-        expedice={stats.expedice}
-        documents={stats.documents}
-        lastUpdate={stats.lastUpdate ? formatDate(stats.lastUpdate) : ""}
-      />
-
-      <div style={{ borderTop: `1px solid ${colors.borderMedium}`, margin: "0 4rem" }} />
-
       {otherPosts.length > 0 && (
-        <section style={{ padding: "4rem 2rem" }}>
+        <section style={{ padding: "2rem 2rem" }}>
           <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
             <div className="flex items-center justify-between" style={{ marginBottom: "2rem" }}>
               <h2 className="font-mono" style={{ color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.15em", textTransform: "uppercase" }}>
@@ -63,13 +52,12 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-2" style={{ gap: "3rem", alignItems: "start" }}>
             <div>
               <h2 style={{ fontSize: sans.h1, fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "2rem" }}>
-                Chceš se o něco podělit?
+                {homepageSettings.contactHeading}
               </h2>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                <p style={{ color: colors.textSecondary, fontSize: sans.base, lineHeight: 1.7, margin: 0 }}>Máš dotaz, nápad, návrh nebo se chceš pochlubit?</p>
-                <p style={{ color: colors.textSecondary, fontSize: sans.base, lineHeight: 1.7, margin: 0 }}>Našel si chybu na webu nebo v mých projektech?</p>
-                <p style={{ color: colors.textSecondary, fontSize: sans.base, lineHeight: 1.7, margin: 0 }}>Ani kritika není nežádoucí.</p>
-                <p style={{ color: colors.textSecondary, fontSize: sans.base, lineHeight: 1.7, margin: "0.75rem 0 0" }}>Napiš a nějak to vyřešíme 😊</p>
+                {homepageSettings.contactDescription.split("\n").map((line, i) => (
+                  <p key={i} style={{ color: colors.textSecondary, fontSize: sans.base, lineHeight: 1.7, margin: 0 }}>{line}</p>
+                ))}
               </div>
             </div>
             <div>

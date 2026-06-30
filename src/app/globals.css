@@ -373,6 +373,22 @@ a:active {
   outline-offset: 2px;
 }
 
+/* LIVE dot blink */
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #FBBF24;
+  flex-shrink: 0;
+  animation: live-blink 1.5s ease-in-out infinite;
+}
+
+@keyframes live-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
 /* Hero section accent line */
 .hero-section {
   position: relative;
