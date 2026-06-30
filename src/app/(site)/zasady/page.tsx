@@ -5,9 +5,9 @@ import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = getPageContent("zasady");
-  const title = page?.data.metaTitle ?? "Zásady ochrany osobních údajů — Peťanovi Projekty";
-  const description = page?.data.metaDescription ?? "Informace o zpracování osobních údajů na blogu Peťanovi Projekty.";
-  const ogImage = page?.data.ogImage;
+  const title = (page?.data.metaTitle as string) ?? "Zásady ochrany osobních údajů — Peťanovi Projekty";
+  const description = (page?.data.metaDescription as string) ?? "Informace o zpracování osobních údajů na blogu Peťanovi Projekty.";
+  const ogImage = page?.data.ogImage as string | undefined;
   return {
     title,
     description,
