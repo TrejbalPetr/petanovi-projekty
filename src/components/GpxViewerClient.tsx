@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -167,6 +167,33 @@ export default function GpxViewerClient({ gpxFile, title }: Props) {
   );
 
   const handleMapLeave = useCallback(() => setHovered(null), []);
+
+  const chartRef = useRef<HTMLDivElement>(null);
+  const handleChartTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (!pts.length || !chartRef.current) return;
+      const touch = e.touches[0];
+      const rect = chartRef.current.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      // padding-left(4px) + chart margin-left(8px) + YAxis width(46px) = 58px
+      // padding-right(4px) + chart margin-right(8px) = 12px
+      const dataLeft = 58;
+      const dataRight = rect.width - 12;
+      if (dataRight <= dataLeft) return;
+      const fraction = Math.max(0, Math.min(1, (x - dataLeft) / (dataRight - dataLeft)));
+      const distMin = pts[0].dist;
+      const distMax = pts[pts.length - 1].dist;
+      const targetDist = distMin + fraction * (distMax - distMin);
+      let best = 0;
+      let bestDiff = Infinity;
+      for (let i = 0; i < pts.length; i++) {
+        const diff = Math.abs(pts[i].dist - targetDist);
+        if (diff < bestDiff) { bestDiff = diff; best = i; }
+      }
+      setHovered(best);
+    },
+    [pts]
+  );
 
   // ── Render states ─────────────────────────────────────────────────────────
 
@@ -359,7 +386,11 @@ export default function GpxViewerClient({ gpxFile, title }: Props) {
             </div>
           </div>
 
-          <div style={{ padding: "0.5rem 0.25rem 0.25rem", touchAction: "pan-y" }}>
+          <div
+            ref={chartRef}
+            style={{ padding: "0.5rem 0.25rem 0.25rem", touchAction: "pan-y" }}
+            onTouchMove={handleChartTouchMove}
+          >
             <ResponsiveContainer width="100%" height={180}>
               <AreaChart
                 data={pts}
