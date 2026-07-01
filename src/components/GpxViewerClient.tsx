@@ -270,8 +270,6 @@ export default function GpxViewerClient({ gpxFile, title }: Props) {
         <StatItem mobile={isMobile} label="PŘEVÝŠENÍ ↑" value={`${Math.round(stats.elevGain)} m`} />
         <StatItem mobile={isMobile} label="PŘEVÝŠENÍ ↓" value={`${Math.round(stats.elevLoss)} m`} />
         <StatItem mobile={isMobile} label="MAX. NADM. V." value={`${Math.round(stats.maxEle)} m n.m.`} />
-        <StatItem mobile={isMobile} label="POZICE" value={hovPt ? `${hovPt.dist.toFixed(2)} km` : "—"} dim={!hovPt} />
-        <StatItem mobile={isMobile} label="NADM. VÝŠKA" value={hovPt ? `${Math.round(hovPt.ele)} m` : "—"} dim={!hovPt} />
       </div>
 
       {/* ── Map ── */}
@@ -334,6 +332,11 @@ export default function GpxViewerClient({ gpxFile, title }: Props) {
             style={{
               padding: "0.5rem 1rem",
               borderBottom: `1px solid ${colors.borderSubtle}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "0.5rem",
             }}
           >
             <span
@@ -346,9 +349,17 @@ export default function GpxViewerClient({ gpxFile, title }: Props) {
             >
               PROFIL PŘEVÝŠENÍ
             </span>
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <div style={{ minWidth: "6rem" }}>
+                <StatItem mobile={false} label="POZICE" value={hovPt ? `${hovPt.dist.toFixed(2)} km` : "—"} dim={!hovPt} />
+              </div>
+              <div style={{ minWidth: "5rem" }}>
+                <StatItem mobile={false} label="NADM. VÝŠKA" value={hovPt ? `${Math.round(hovPt.ele)} m` : "—"} dim={!hovPt} />
+              </div>
+            </div>
           </div>
 
-          <div style={{ padding: "0.5rem 0.25rem 0.25rem" }}>
+          <div style={{ padding: "0.5rem 0.25rem 0.25rem", touchAction: "pan-y" }}>
             <ResponsiveContainer width="100%" height={180}>
               <AreaChart
                 data={pts}
@@ -356,7 +367,7 @@ export default function GpxViewerClient({ gpxFile, title }: Props) {
                 onMouseMove={(data) => {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const d = data as any;
-                  if (d.isTooltipActive && d.activeTooltipIndex !== undefined) {
+                  if (d.activeTooltipIndex !== undefined && d.activeTooltipIndex !== null) {
                     setHovered(d.activeTooltipIndex as number);
                   }
                 }}
@@ -430,7 +441,7 @@ export default function GpxViewerClient({ gpxFile, title }: Props) {
                   </>
                 )}
 
-                <Tooltip content={HiddenTooltip} />
+                <Tooltip content={HiddenTooltip} cursor={false} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
