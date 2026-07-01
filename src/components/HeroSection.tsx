@@ -75,7 +75,7 @@ export default function HeroSection({ post, stats, settings }: { post: Post; sta
         }}
       >
         <div className="font-mono" style={{ maxWidth: "1000px", margin: "0 auto", padding: "0.25rem 0", display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: mono.xs, letterSpacing: "0.12em", color: colors.textSecondary }}>
-          <span>FIELD_STATION // HOME</span>
+          <span className="hidden md:inline">FIELD_STATION // HOME</span>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
               {/* inline style ensures yellow regardless of CSS cache */}
@@ -117,24 +117,26 @@ export default function HeroSection({ post, stats, settings }: { post: Post; sta
               </span>
             </div>
 
-            <p style={{ color: colors.textSecondary, fontSize: sans.base, lineHeight: 1.7, margin: 0, whiteSpace: "pre-line" }}>
+            <p className="hidden md:block" style={{ color: colors.textSecondary, fontSize: sans.base, lineHeight: 1.7, margin: 0, whiteSpace: "pre-line" }}>
               {settings.heroDescription}
             </p>
 
             {/* Counters */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", border: `1px solid ${colors.border}` }}>
+            <div className="hidden md:grid md:grid-cols-3" style={{ border: `1px solid ${colors.border}` }}>
               {counters.map(({ value, label }, i) => (
                 <div
                   key={label}
+                  className="flex items-center gap-3 md:block"
                   style={{
                     padding: "0.75rem 1rem",
                     borderRight: i < counters.length - 1 ? `1px solid ${colors.border}` : "none",
+                    borderBottom: i < counters.length - 1 ? `1px solid ${colors.border}` : "none",
                   }}
                 >
                   <div className="font-mono" style={{ color: colors.yellow, fontSize: "1.5rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1 }}>
                     {value}
                   </div>
-                  <div className="font-mono" style={{ color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.1em", marginTop: "0.3rem", textTransform: "uppercase" }}>
+                  <div className="font-mono hidden md:block" style={{ color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.1em", marginTop: "0.3rem", textTransform: "uppercase" }}>
                     {label}
                   </div>
                 </div>
@@ -173,9 +175,6 @@ export default function HeroSection({ post, stats, settings }: { post: Post; sta
                   // {post.category.toUpperCase()}
                 </span>
               </div>
-              <span className="font-mono" style={{ color: colors.textSecondary, fontSize: mono.xs, letterSpacing: "0.1em" }}>
-                IMG_01
-              </span>
             </div>
 
             {/* Cover image */}
@@ -195,10 +194,15 @@ export default function HeroSection({ post, stats, settings }: { post: Post; sta
             </div>
 
             {/* Date + reading time under image */}
-            <div className="font-mono flex items-center gap-3" style={{ position: "relative", zIndex: 2, color: colors.blue, fontSize: mono.xs, letterSpacing: "0.1em" }}>
-              <span>{formatDate(post.date)}</span>
-              <span style={{ color: colors.borderStrong }}>·</span>
-              <span>{post.readingTime} min čtení</span>
+            <div style={{ position: "relative", zIndex: 2 }}>
+              <div className="font-mono flex items-center gap-3" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.1em" }}>
+                <span>{formatDate(post.date)}</span>
+                <span style={{ color: colors.borderStrong }}>·</span>
+                <span>{post.readingTime} min čtení</span>
+              </div>
+              <div className="font-mono md:hidden" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.08em", marginTop: "0.3rem" }}>
+                {post.coordinates ?? "N 50°05′ E 14°28′"}
+              </div>
             </div>
 
             {/* Title */}
@@ -213,7 +217,7 @@ export default function HeroSection({ post, stats, settings }: { post: Post; sta
 
             {/* Footer: coordinates left | FULL_ARTICLE right */}
             <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.75rem", borderTop: `1px solid ${colors.borderSubtle}`, marginTop: "auto" }}>
-              <div className="font-mono" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.08em" }}>
+              <div className="font-mono hidden md:block" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.08em" }}>
                 {post.coordinates ?? "N 50°05′ E 14°28′"}
               </div>
               <span className="font-mono" style={{ color: colors.yellow, fontSize: mono.sm, letterSpacing: "0.1em" }}>

@@ -138,7 +138,7 @@ export default function Header() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              padding: "1rem 1.5rem",
+              padding: "1rem 2rem",
               borderBottom: `1px solid ${colors.borderStrong}`,
               flexShrink: 0,
             }}
