@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Test" xmlns="http://www.topografix.com/GPX/1/1">
+  <trk>
+    <name>Testovací trasa — Šumava</name>
+    <trkseg>
+      <trkpt lat="49.1200" lon="13.5500"><ele>780</ele></trkpt>
+      <trkpt lat="49.1230" lon="13.5560"><ele>810</ele></trkpt>
+      <trkpt lat="49.1260" lon="13.5620"><ele>850</ele></trkpt>
+      <trkpt lat="49.1290" lon="13.5680"><ele>890</ele></trkpt>
+      <trkpt lat="49.1320" lon="13.5740"><ele>930</ele></trkpt>
+      <trkpt lat="49.1350" lon="13.5800"><ele>970</ele></trkpt>
+      <trkpt lat="49.1380" lon="13.5860"><ele>1010</ele></trkpt>
+      <trkpt lat="49.1410" lon="13.5920"><ele>1050</ele></trkpt>
+      <trkpt lat="49.1440" lon="13.5980"><ele>1090</ele></trkpt>
+      <trkpt lat="49.1470" lon="13.6040"><ele>1130</ele></trkpt>
+      <trkpt lat="49.1500" lon="13.6100"><ele>1162</ele></trkpt>
+      <trkpt lat="49.1530" lon="13.6160"><ele>1140</ele></trkpt>
+      <trkpt lat="49.1560" lon="13.6220"><ele>1110</ele></trkpt>
+      <trkpt lat="49.1590" lon="13.6280"><ele>1080</ele></trkpt>
+      <trkpt lat="49.1620" lon="13.6340"><ele>1050</ele></trkpt>
+      <trkpt lat="49.1650" lon="13.6400"><ele>1020</ele></trkpt>
+      <trkpt lat="49.1680" lon="13.6460"><ele>990</ele></trkpt>
+      <trkpt lat="49.1710" lon="13.6520"><ele>960</ele></trkpt>
+      <trkpt lat="49.1740" lon="13.6580"><ele>930</ele></trkpt>
+      <trkpt lat="49.1770" lon="13.6640"><ele>900</ele></trkpt>
+      <trkpt lat="49.1800" lon="13.6700"><ele>870</ele></trkpt>
+      <trkpt lat="49.1830" lon="13.6760"><ele>840</ele></trkpt>
+      <trkpt lat="49.1860" lon="13.6820"><ele>810</ele></trkpt>
+      <trkpt lat="49.1890" lon="13.6880"><ele>780</ele></trkpt>
+      <trkpt lat="49.1920" lon="13.6940"><ele>760</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

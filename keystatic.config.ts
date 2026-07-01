@@ -1,4 +1,6 @@
+import React from "react";
 import { config, collection, singleton, fields } from "@keystatic/core";
+import { block } from "@keystatic/core/content-components";
 
 export default config({
   storage: {
@@ -50,7 +52,66 @@ export default config({
           directory: "public/images/og",
           publicPath: "/images/og/",
         }),
-        body: fields.mdx({ label: "Obsah" }),
+        body: fields.mdx({
+          label: "Obsah",
+          components: {
+            GpxViewer: block({
+              label: "GPX Mapa",
+              description: "Vloží interaktivní mapu trasy s profilem převýšení z GPX souboru.",
+              schema: {
+                gpxFile: fields.file({
+                  label: "GPX Soubor (.gpx)",
+                  directory: "public/gpx",
+                  publicPath: "/gpx/",
+                  description: "Nahrajte GPX soubor trasy přímo sem.",
+                }),
+                title: fields.text({
+                  label: "Název trasy (volitelné)",
+                  description: "Zobrazí se v záhlaví mapy, např. 'Malá Fatra — přechod'",
+                }),
+              },
+              ContentView: () =>
+                React.createElement(
+                  "div",
+                  {
+                    style: {
+                      padding: "12px 16px",
+                      background: "#0d2540",
+                      border: "1px solid #1E3A5F",
+                      borderLeft: "3px solid #FBBF24",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    },
+                  },
+                  React.createElement(
+                    "span",
+                    {
+                      style: {
+                        fontFamily: "monospace",
+                        fontSize: "11px",
+                        color: "#FBBF24",
+                        letterSpacing: "0.1em",
+                      },
+                    },
+                    "[ GPX MAPA ]"
+                  ),
+                  React.createElement(
+                    "span",
+                    {
+                      style: {
+                        fontFamily: "monospace",
+                        fontSize: "10px",
+                        color: "#7A9BB5",
+                        letterSpacing: "0.06em",
+                      },
+                    },
+                    "mapa + profil převýšení"
+                  )
+                ),
+            }),
+          },
+        }),
         downloads: fields.array(
           fields.object({
             label: fields.text({

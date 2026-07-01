@@ -144,9 +144,11 @@ export default function HeroSection({ post, stats, settings }: { post: Post; sta
             </div>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
-              <Link href={`/blog/${post.slug}`} className="btn-primary">
-                › NEJNOVĚJŠÍ LOG
-              </Link>
+              <div className="hidden md:block">
+                <Link href={`/blog/${post.slug}`} className="btn-primary">
+                  › NEJNOVĚJŠÍ LOG
+                </Link>
+              </div>
               <Link href="/blog" className="btn-secondary">
                 ARCHIV →
               </Link>
