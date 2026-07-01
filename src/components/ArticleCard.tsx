@@ -56,23 +56,50 @@ export default function ArticleCard({ post }: { post: Post }) {
         </div>
       </div>
 
-      <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1 }}>
-        <div className="font-mono flex items-center justify-between" style={{ fontSize: mono.base }}>
-          <span style={{ color: colors.yellow }}>DATUM: {formatDate(post.date)}</span>
-          {post.coordinates && <span style={{ color: colors.blue }}>{post.coordinates}</span>}
+      <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.5rem", flex: 1 }}>
+
+        {/* Datum s ikonou */}
+        <div className="font-mono flex items-center gap-1.5" style={{ fontSize: mono.xs, color: colors.textSecondary, letterSpacing: "0.06em" }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.7 }}>
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          {formatDate(post.date)}
         </div>
+
+        {/* Nadpis */}
         <h3 style={{ fontSize: sans.h3, fontWeight: 600, color: colors.textPrimary, letterSpacing: "-0.02em", lineHeight: 1.3, margin: 0 }}>
           {post.title}
         </h3>
+
+        {/* Souřadnice pod nadpisem */}
+        {post.coordinates && (
+          <div className="font-mono" style={{ fontSize: mono.xs, color: colors.blue, letterSpacing: "0.08em" }}>
+            {post.coordinates}
+          </div>
+        )}
+
+        {/* Perex */}
         <p style={{ color: colors.textSecondary, fontSize: sans.sm, lineHeight: 1.6, margin: 0, textAlign: "justify", flex: 1 }}>
           {post.excerpt.slice(0, 140)}…
         </p>
-        <div className="font-mono flex items-center justify-between" style={{ marginTop: "0.4rem", fontSize: mono.base }}>
-          <span style={{ color: colors.blue }}>ČAS: {post.readingTime} min</span>
-          <span style={{ color: hovered ? colors.yellow : colors.textSecondary, transition: "color 0.2s ease", letterSpacing: "0.06em" }}>
-            Read_log —&gt;
+
+        {/* Spodní řádek: čas čtení + akce */}
+        <div className="font-mono flex items-center justify-between" style={{ marginTop: "0.4rem" }}>
+          <span className="flex items-center gap-1.5" style={{ fontSize: mono.xs, color: colors.textSecondary, letterSpacing: "0.06em" }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.7 }}>
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            {post.readingTime} MIN
+          </span>
+          <span style={{ color: colors.yellow, fontSize: mono.lg, letterSpacing: "0.08em", transition: "opacity 0.2s ease", opacity: hovered ? 1 : 0.75 }}>
+            READ_LOG →
           </span>
         </div>
+
       </div>
     </article>
   );

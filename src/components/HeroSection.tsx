@@ -193,16 +193,15 @@ export default function HeroSection({ post, stats, settings }: { post: Post; sta
               </div>
             </div>
 
-            {/* Date + reading time under image */}
-            <div style={{ position: "relative", zIndex: 2 }}>
-              <div className="font-mono flex items-center gap-3" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.1em" }}>
-                <span>{formatDate(post.date)}</span>
-                <span style={{ color: colors.borderStrong }}>·</span>
-                <span>{post.readingTime} min čtení</span>
-              </div>
-              <div className="font-mono md:hidden" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.08em", marginTop: "0.3rem" }}>
-                {post.coordinates ?? "N 50°05′ E 14°28′"}
-              </div>
+            {/* Datum s ikonou */}
+            <div className="font-mono flex items-center gap-1.5" style={{ position: "relative", zIndex: 2, fontSize: mono.xs, color: colors.textSecondary, letterSpacing: "0.06em" }}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.7 }}>
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              {formatDate(post.date)}
             </div>
 
             {/* Title */}
@@ -210,15 +209,26 @@ export default function HeroSection({ post, stats, settings }: { post: Post; sta
               {post.title}
             </h2>
 
+            {/* Souřadnice pod nadpisem */}
+            {(post.coordinates ?? "N 50°05′ E 14°28′") && (
+              <div className="font-mono" style={{ position: "relative", zIndex: 2, fontSize: mono.xs, color: colors.blue, letterSpacing: "0.08em" }}>
+                {post.coordinates ?? "N 50°05′ E 14°28′"}
+              </div>
+            )}
+
             {/* Excerpt */}
             <p style={{ position: "relative", zIndex: 2, color: colors.textSecondary, fontSize: sans.sm, lineHeight: 1.6, margin: 0 }}>
               {post.excerpt}
             </p>
 
-            {/* Footer: coordinates left | FULL_ARTICLE right */}
+            {/* Footer: čas čtení + akce */}
             <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.75rem", borderTop: `1px solid ${colors.borderSubtle}`, marginTop: "auto" }}>
-              <div className="font-mono hidden md:block" style={{ color: colors.blue, fontSize: mono.xs, letterSpacing: "0.08em" }}>
-                {post.coordinates ?? "N 50°05′ E 14°28′"}
+              <div className="font-mono flex items-center gap-1.5" style={{ fontSize: mono.xs, color: colors.textSecondary, letterSpacing: "0.06em" }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.7 }}>
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                {post.readingTime} MIN
               </div>
               <span className="font-mono" style={{ color: colors.yellow, fontSize: mono.sm, letterSpacing: "0.1em" }}>
                 FULL_ARTICLE →

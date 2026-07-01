@@ -8,7 +8,7 @@ export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="px-5 py-12 sm:px-8 sm:py-20">
+    <div className="px-5 py-8 sm:px-8 sm:py-14">
       <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
         <div style={{ marginBottom: "4rem" }}>
           <div className="font-mono" style={{ color: colors.yellow, fontSize: mono.xs, letterSpacing: "0.15em", marginBottom: "1rem", textTransform: "uppercase" }}>
